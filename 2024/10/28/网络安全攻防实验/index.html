@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="前置知识 ApacheApache HTTP server，a free open-souce web server software. 核心概念和特点 HTTP 协议处理：旨在有效处理 HTTP 请求响应，支持 HTTP&#x2F;1.1 并具有可用于 HTTP&#x2F;2 的模块 模块化：apache 主要优势之一是其模块化架构。功能可以通过模块进行扩展，定制化轻量服务器 虚拟主机：支持基于">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络安全攻防实验">
+<meta property="og:url" content="http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/index.html">
+<meta property="og:site_name" content="psych&#39;s blog">
+<meta property="og:description" content="前置知识 ApacheApache HTTP server，a free open-souce web server software. 核心概念和特点 HTTP 协议处理：旨在有效处理 HTTP 请求响应，支持 HTTP&#x2F;1.1 并具有可用于 HTTP&#x2F;2 的模块 模块化：apache 主要优势之一是其模块化架构。功能可以通过模块进行扩展，定制化轻量服务器 虚拟主机：支持基于">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20241028173745943.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20241028173734815.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20241028173829849.png">
+<meta property="article:published_time" content="2024-10-28T09:33:46.000Z">
+<meta property="article:modified_time" content="2024-10-29T04:34:15.332Z">
+<meta property="article:author" content="psych">
+<meta property="article:tag" content="课内">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20241028173745943.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>网络安全攻防实验</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="psych&#39;s blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Article</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/10/29/%E5%91%BD%E7%90%86%E5%AD%A6%E4%B8%AD%E7%9A%84%E8%BE%A9%E8%AF%81%E6%80%9D%E6%83%B3/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/10/26/%E6%96%B0%E7%96%86/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&text=网络安全攻防实验"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&title=网络安全攻防实验"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&is_video=false&description=网络安全攻防实验"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=网络安全攻防实验&body=Check out this article: http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&title=网络安全攻防实验"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&title=网络安全攻防实验"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&title=网络安全攻防实验"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&title=网络安全攻防实验"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&name=网络安全攻防实验&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&t=网络安全攻防实验"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache"><span class="toc-number">1.1.</span> <span class="toc-text">Apache</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E5%92%8C%E7%89%B9%E7%82%B9"><span class="toc-number">1.1.1.</span> <span class="toc-text">核心概念和特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97"><span class="toc-number">1.1.2.</span> <span class="toc-text">模块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-apache-HTTP-server"><span class="toc-number">1.1.3.</span> <span class="toc-text">配置 apache HTTP server</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80-TLS-%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">实验一 - TLS 配置与流量分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%86%85%E5%AE%B9"><span class="toc-number">2.1.</span> <span class="toc-text">实验内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86"><span class="toc-number">2.2.</span> <span class="toc-text">实验原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TLS-%E5%8D%8F%E8%AE%AE"><span class="toc-number">2.2.1.</span> <span class="toc-text">TLS 协议</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OpenSSL"><span class="toc-number">2.2.2.</span> <span class="toc-text">OpenSSL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Diffie-Hellman%EF%BC%88DH%EF%BC%89"><span class="toc-number">2.2.3.</span> <span class="toc-text">Diffie-Hellman（DH）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%86%85%E5%AE%B9-1"><span class="toc-number">2.3.</span> <span class="toc-text">实验内容</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">2.3.1.</span> <span class="toc-text">环境配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%8C-WPA-PSK-%E5%8F%A3%E4%BB%A4%E6%94%BB%E5%87%BB"><span class="toc-number">3.</span> <span class="toc-text">实验二 - WPA-PSK 口令攻击</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        网络安全攻防实验
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">psych</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-10-28T09:33:46.000Z" class="dt-published" itemprop="datePublished">2024-10-28</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E8%AF%BE%E5%86%85/">课内</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E8%AF%BE%E5%86%85/" rel="tag">课内</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><hr>
+<h3 id="Apache"><a href="#Apache" class="headerlink" title="Apache"></a>Apache</h3><p>Apache HTTP server，a free open-souce <strong>web server software.</strong></p>
+<h4 id="核心概念和特点"><a href="#核心概念和特点" class="headerlink" title="核心概念和特点"></a>核心概念和特点</h4><ul>
+<li>HTTP 协议处理：旨在有效处理 HTTP 请求响应，支持 HTTP&#x2F;1.1 并具有可用于 HTTP&#x2F;2 的模块</li>
+<li>模块化：apache 主要优势之一是其模块化架构。功能可以通过模块进行扩展，定制化轻量服务器</li>
+<li>虚拟主机：支持基于 IP 和基于名称的虚拟主机，允许单个服务器托管多个网站</li>
+<li>安全功能：包括对 SSL&#x2F;TLS 加密，身份验证机制和访问控制的支持</li>
+<li>configure：使用纯文本配置文件，主要是 <code>httpd.conf</code> 进行服务器设置，使用 <code>.htaccess</code> 进行目录级配置</li>
+</ul>
+<h4 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h4><ul>
+<li><code>mod_auth_basic</code>, <code>mod_auth_digest</code> ：身份验证和授权模块，控制对资源的访问</li>
+<li><code>mod_ssl</code> ：启用加密连接的 SSL&#x2F;TLS 支持。</li>
+<li><code>mod_proxy</code> ：提供正向和反向代理功能。</li>
+<li><code>mod_rewrite</code> ：允许灵活的 URL 操作和重定向。</li>
+<li><code>mod_deflate</code> ：在将内容发送到客户端之前对其进行压缩以节省带宽。</li>
+<li><code>mod_cache</code> 、 <code>mod_cache_disk</code> 、 <code>mod_cache_socache</code> ：通过缓存经常访问的内容来提高性能。</li>
+</ul>
+<h4 id="配置-apache-HTTP-server"><a href="#配置-apache-HTTP-server" class="headerlink" title="配置 apache HTTP server"></a>配置 apache HTTP server</h4><ul>
+<li><p>目录结构</p>
+<ul>
+<li>主配置文件： <code>/etc/apache2/apache2.conf</code></li>
+<li>默认站点配置： <code>/etc/apache2/sites-available/000-default.conf</code></li>
+<li>模块目录： <code>/etc/apache2/mods-available/</code> 和 <code>/etc/apache2/mods-enabled/</code></li>
+<li>文档根目录： <code>/var/www/html/</code></li>
+</ul>
+</li>
+<li><p>启用模块</p>
+<ul>
+<li><code>sudo a2enmod module_name</code></li>
+<li><code>sudo systemctl restart apache2</code></li>
+</ul>
+</li>
+<li><p>Virtual Hosts</p>
+<p>创建一个新的配置文件：<code>/etc/apache2/sites-available/psych.green.conf</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;VirtualHost *:80&gt;</span><br><span class="line">    ServerName psych.green</span><br><span class="line">    DocumentRoot /var/www/psych.green/public_html</span><br><span class="line"></span><br><span class="line">    &lt;Directory /var/www/psych.green/public_html&gt;</span><br><span class="line">        Options Indexes FollowSymLinks</span><br><span class="line">        AllowOverride All</span><br><span class="line">        Require all granted</span><br><span class="line">    &lt;/Directory&gt;</span><br><span class="line"></span><br><span class="line">    ErrorLog $&#123;APACHE_LOG_DIR&#125;/psych.green_error.log</span><br><span class="line">    CustomLog $&#123;APACHE_LOG_DIR&#125;/psych.green_access.log combined</span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用 FastCGI（一种允许 Web 服务器与外部应用程序（如 PHP 脚本）交互以生成动态内容的协议）和PHP-FPM（进程管理器，管理 PHP 进程并允许 Apache 通过 FastCGI 与 PHP 脚本进行通信）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;VirtualHost *:80&gt;</span><br><span class="line">    ServerName psych.green</span><br><span class="line">    DocumentRoot /var/www/psych.green/</span><br><span class="line"></span><br><span class="line">    &lt;FilesMatch \\.php$&gt;</span><br><span class="line">        SetHandler &quot;proxy:unix:/run/php/php7.4-fpm.sock|fcgi://localhost/&quot;</span><br><span class="line">    &lt;/FilesMatch&gt;</span><br><span class="line"></span><br><span class="line">    # Other configurations</span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>.htccess</code> —— 提供目录级配置覆盖。</p>
+<ul>
+<li>URL 重写(使用<code>mod_rewrite</code>)</li>
+<li>访问控制</li>
+</ul>
+<p>在 Apache 中启用 <code>.htaccess</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;Directory /var/www/psych.green/public_html&gt;</span><br><span class="line">    AllowOverride All</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="实验一-TLS-配置与流量分析"><a href="#实验一-TLS-配置与流量分析" class="headerlink" title="实验一 - TLS 配置与流量分析"></a>实验一 - TLS 配置与流量分析</h2><hr>
+<h3 id="实验内容"><a href="#实验内容" class="headerlink" title="实验内容"></a>实验内容</h3><ul>
+<li>配置 TLS 协议分析环境</li>
+<li>配置 apache 服务器的 https 协议</li>
+<li>对指定域名发起 HTTPS 请求，抓包分析 TLS 协议流程、提取其中的关键信息</li>
+</ul>
+<h3 id="实验原理"><a href="#实验原理" class="headerlink" title="实验原理"></a>实验原理</h3><h4 id="TLS-协议"><a href="#TLS-协议" class="headerlink" title="TLS 协议"></a>TLS 协议</h4><p>网络安全协议概览</p>
+<img src="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20241028173745943.png" alt="image-20241028173745943" style="zoom:33%;" />
+
+<p>TLS协议主要用于网络通信中的<strong>数据加密、完整性验证</strong>和<strong>身份认证</strong>，通常应用于HTTPS、电子邮件、即时通讯等需要保护数据安全的场景。TLS主要由三部分组成：<strong>记录协议</strong>、<strong>握手协议</strong>、<strong>警报协议</strong>。</p>
+<p>主要概念：</p>
+<ul>
+<li><p><strong>加密算法</strong></p>
+<p>包括对称加密（如AES）、非对称加密（如RSA）和哈希函数（如SHA-256）。对称加密用于数据加密，非对称加密用于身份认证和密钥交换，哈希函数用于数据完整性验证。</p>
+</li>
+<li><p><strong>数字证书</strong></p>
+<p>数字证书包含服务器的公钥及身份信息，由受信任的CA（证书颁发机构）签发。客户端通过验证服务器证书来确定服务器的真实性。</p>
+</li>
+<li><p><strong>密钥交换</strong></p>
+<p>TLS1.3之前通常使用 RSA 和 Diffie-Hellman 算法。TLS1.3 采用了更高效的密钥交换算法如 ECDHE（椭圆曲线Diffie-Hellman）。</p>
+</li>
+</ul>
+<h4 id="OpenSSL"><a href="#OpenSSL" class="headerlink" title="OpenSSL"></a>OpenSSL</h4><p>一个强大的开源工具包，<strong>支持 TLS 和 SSL 协议的实现及加密功能</strong>，包括加密、解密、数字证书的生成和管理。它广泛应用于网络服务器（如Nginx、Apache）和客户端程序，用于保护数据的传输安全。</p>
+<h4 id="Diffie-Hellman（DH）"><a href="#Diffie-Hellman（DH）" class="headerlink" title="Diffie-Hellman（DH）"></a>Diffie-Hellman（DH）</h4><ul>
+<li><p>Diffie-Hellman 密钥交换</p>
+<p>：</p>
+<ul>
+<li>DH 是一种加密协议，允许双方在公开信道上安全地生成共享密钥。这个密钥可以用于后续的加密通信。</li>
+</ul>
+</li>
+<li><p>安全性</p>
+<p>：</p>
+<ul>
+<li>DH 协议的安全性基于离散对数问题的困难性，使得即使攻击者能够监听通信，也无法轻易推算出共享密钥。</li>
+<li>在 TLS 配置中使用 DH 参数可以增强服务器的安全性，特别是在使用前向保密（Perfect Forward Secrecy, PFS）时。</li>
+</ul>
+</li>
+<li><p>支持多种加密套件</p>
+<p>：</p>
+<ul>
+<li>一些 TLS 加密套件依赖于 DH 参数来进行密钥交换，因此生成这些参数是安全配置的一部分。</li>
+</ul>
+</li>
+</ul>
+<h3 id="实验内容-1"><a href="#实验内容-1" class="headerlink" title="实验内容"></a>实验内容</h3><h4 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h4><ol>
+<li><p>基本信息</p>
+<ul>
+<li>主机：windows，安装 wireshark 抓包</li>
+<li>虚拟机：Ubuntu，与主机网络连通</li>
+</ul>
+</li>
+<li><p>Ubuntu 配置 apache 服务器的 HTTPS</p>
+<ul>
+<li><p>创建证书，密钥等</p>
+<img src="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20241028173734815.png" alt="image-20241028173734815" style="zoom: 50%;" />
+</li>
+<li><p>创建一个强的 DH 群以增强服务安全性：<code>sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048</code></p>
+</li>
+<li><p>安装 apache</p>
+</li>
+<li><p>创建 apache 配置文件，并进行强加密设置</p>
+<ul>
+<li>在 &#x2F;etc&#x2F;apache2&#x2F;conf-available 下创建 ssl-params.conf</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># from &lt;https://cipherli.st/&gt;</span><br><span class="line"># and &lt;https://raymii.org/s/tutorials/Strong_SSL_Security_On_Apache2.html&gt;</span><br><span class="line">SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH</span><br><span class="line">SSLProtocol All -SSLv2 -SSLv3</span><br><span class="line">SSLHonorCipherOrder On</span><br><span class="line"></span><br><span class="line"># Disable preloading HSTS for now. You can use the commented out header line that includes</span><br><span class="line"># the &quot;preload&quot; directive if you understand the implications.</span><br><span class="line"># Header always set Strict-Transport-Security &quot;max-age=63072000; includeSubdomains; preload&quot;</span><br><span class="line">Header always set Strict-Transport-Security &quot;max-age=63072000; includeSubdomains&quot;</span><br><span class="line">Header always set X-Frame-Options DENY</span><br><span class="line">Header always set X-Content-Type-Options nosniff</span><br><span class="line"></span><br><span class="line"># Requires Apache &gt;= 2.4</span><br><span class="line">SSLCompression off</span><br><span class="line">SSLSessionTickets Off</span><br><span class="line">SSLUseStapling on</span><br><span class="line">SSLStaplingCache &quot;shmcb:logs/stapling-cache(150000)&quot;</span><br><span class="line">SSLOpenSSLConfCmd DHParameters &quot;/etc/ssl/certs/dhparam.pem&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改默认的 Apache SSL 虚拟主机文件 <code>/etc/apache2/sites-available/default-ssl.conf</code> 包括 Email &amp; Domain、SSLCertificateFile、BrowserMatch</p>
+</li>
+<li><p>为了更好的安全性，通常也推荐设置为自动重定向 http 访问到 https 访问：修改配置文件 <code>/etc/apache2/sites-available/000-default.conf</code> 加入一个 Redirect 指令来指向 SSL 版本的站点</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;VirtualHost *:80&gt;</span><br><span class="line">. . .</span><br><span class="line">Redirect &quot;/&quot; &quot;https://your_domain_or_IP/&quot;</span><br><span class="line">. . .</span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使模块 mod_ssl、mod_headers（配置文件中某些设置需要）生效：<code>sudo a2enmod ssl; sudo a2enmod headers</code></p>
+</li>
+<li><p>使 SSL 虚拟主机生效：<code>sudo a2ensite default-ssl</code></p>
+</li>
+<li><p>使 ssl-params.conf 生效：<code>sudo a2enconf ssl-params</code></p>
+</li>
+<li><p>检查：<code>sudo apache2ctl configtest</code></p>
+</li>
+<li><p>重启：<code>sudo systemctl restart apache2</code></p>
+</li>
+</ul>
+</li>
+<li><p>TLS 流量分析</p>
+</li>
+</ol>
+<p>主机打开 wireshark，设置过滤器为 ssl (仅对 TLS 协议数据分析)。</p>
+<p>注意这里的坑是：加了代理之后主机设置了 hosts 也没办法正确重定向到局域网ip，需要关闭代理。。。</p>
+<p>设置过滤器为 ssl</p>
+<img src="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20241028173829849.png" alt="image-20241028173829849" style="zoom:33%;" />
+
+<p>按照TLS协议的流程，捕获的消息包含如下内容：</p>
+<ol>
+<li><p><strong>ClientHello</strong></p>
+<p>客户端向服务器发送<code>ClientHello</code>消息，包括TLS版本、支持的加密套件、随机数以及支持的扩展列表。它是 TLS 握手的起始点。</p>
+</li>
+<li><p><strong>ServerHello</strong></p>
+<p>服务器回应<code>ClientHello</code>，选择一个加密套件并确认TLS版本。同时，服务器发送自己的随机数和扩展列表，确定接下来的通信参数。</p>
+</li>
+<li><p><strong>ChangeCipherSpec</strong></p>
+<p>服务器和客户端会分别发送<code>ChangeCipherSpec</code>消息，通知对方接下来的通信内容将使用协商的加密算法和密钥进行加密。</p>
+</li>
+<li><p><strong>Application Data应用数据</strong></p>
+<p>握手完成后，服务器和客户端可以开始发送加密的应用数据。这些数据通过对称加密加密，因此无法直接查看内容。</p>
+</li>
+</ol>
+<h2 id="实验二-WPA-PSK-口令攻击"><a href="#实验二-WPA-PSK-口令攻击" class="headerlink" title="实验二 - WPA-PSK 口令攻击"></a>实验二 - WPA-PSK 口令攻击</h2><hr>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Article</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache"><span class="toc-number">1.1.</span> <span class="toc-text">Apache</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E5%92%8C%E7%89%B9%E7%82%B9"><span class="toc-number">1.1.1.</span> <span class="toc-text">核心概念和特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97"><span class="toc-number">1.1.2.</span> <span class="toc-text">模块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-apache-HTTP-server"><span class="toc-number">1.1.3.</span> <span class="toc-text">配置 apache HTTP server</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80-TLS-%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">实验一 - TLS 配置与流量分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%86%85%E5%AE%B9"><span class="toc-number">2.1.</span> <span class="toc-text">实验内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86"><span class="toc-number">2.2.</span> <span class="toc-text">实验原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TLS-%E5%8D%8F%E8%AE%AE"><span class="toc-number">2.2.1.</span> <span class="toc-text">TLS 协议</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OpenSSL"><span class="toc-number">2.2.2.</span> <span class="toc-text">OpenSSL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Diffie-Hellman%EF%BC%88DH%EF%BC%89"><span class="toc-number">2.2.3.</span> <span class="toc-text">Diffie-Hellman（DH）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%86%85%E5%AE%B9-1"><span class="toc-number">2.3.</span> <span class="toc-text">实验内容</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">2.3.1.</span> <span class="toc-text">环境配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%8C-WPA-PSK-%E5%8F%A3%E4%BB%A4%E6%94%BB%E5%87%BB"><span class="toc-number">3.</span> <span class="toc-text">实验二 - WPA-PSK 口令攻击</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&text=网络安全攻防实验"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&title=网络安全攻防实验"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&is_video=false&description=网络安全攻防实验"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=网络安全攻防实验&body=Check out this article: http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&title=网络安全攻防实验"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&title=网络安全攻防实验"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&title=网络安全攻防实验"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&title=网络安全攻防实验"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&name=网络安全攻防实验&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://p5ych2022.github.io/2024/10/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E5%AE%9E%E9%AA%8C/&t=网络安全攻防实验"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2022-2024
+    psych
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Article</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+    </ul>
+    <ul>
+      
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_site_pv">
+            本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        </span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv" style='display:none'>
+                本站访客数<span id="busuanzi_value_site_uv"></span>人
+        </span>
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      
+    </ul>
+  </nav>
+</div>
+
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'p5ych2022/psych.green';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
