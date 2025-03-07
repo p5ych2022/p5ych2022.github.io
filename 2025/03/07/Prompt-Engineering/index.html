@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
     <meta name="description" content="相关概念   Zero-shot 一种无需特定任务的训练数据，直接利用预训练模型进行预测的方法。这种能力主要依赖于模型的预训练阶段所获得的广泛知识和泛化能力。    Few-shot 利用少量样本进行模型训练或微调，从而使模型能够在特定任务上表现良好。这种方法依赖于给模型提供几个示例，使其能够提高任务理解的情况。   Temperature 用于调整生成过程的随机性。值越大，生成的文本随机性和创">
 <meta property="og:type" content="article">
-<meta property="og:title" content="psych&#39;s blog">
+<meta property="og:title" content="Prompt-Engineering">
 <meta property="og:url" content="http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/index.html">
 <meta property="og:site_name" content="psych&#39;s blog">
 <meta property="og:description" content="相关概念   Zero-shot 一种无需特定任务的训练数据，直接利用预训练模型进行预测的方法。这种能力主要依赖于模型的预训练阶段所获得的广泛知识和泛化能力。    Few-shot 利用少量样本进行模型训练或微调，从而使模型能够在特定任务上表现良好。这种方法依赖于给模型提供几个示例，使其能够提高任务理解的情况。   Temperature 用于调整生成过程的随机性。值越大，生成的文本随机性和创">
@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20250307211044954.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20250307211100060.png">
 <meta property="article:published_time" content="2025-03-07T13:05:22.000Z">
-<meta property="article:modified_time" content="2025-03-07T13:24:38.493Z">
+<meta property="article:modified_time" content="2025-03-07T13:29:11.085Z">
 <meta property="article:author" content="psych">
 <meta property="article:tag" content="prompt">
 <meta property="article:tag" content="PE">
@@ -44,7 +44,7 @@
       
     
     <!-- title -->
-    <title>psych&#39;s blog</title>
+    <title>Prompt-Engineering</title>
     <!-- async scripts -->
     <!-- Google Analytics -->
 
@@ -110,16 +110,16 @@
     <div id="share" style="display: none">
       <ul>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&text="><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title="><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&is_video=false&description="><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=&body=Check out this article: http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title="><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title="><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title="><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title="><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&name=&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&t="><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&text=Prompt-Engineering"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title=Prompt-Engineering"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&is_video=false&description=Prompt-Engineering"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Prompt-Engineering&body=Check out this article: http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title=Prompt-Engineering"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title=Prompt-Engineering"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title=Prompt-Engineering"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title=Prompt-Engineering"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&name=Prompt-Engineering&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&t=Prompt-Engineering"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -139,7 +139,7 @@
   <header>
     
     <h1 class="posttitle p-name" itemprop="name headline">
-        
+        Prompt-Engineering
     </h1>
 
 
@@ -340,16 +340,16 @@
     <div id="share-footer" style="display: none">
       <ul>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&text="><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title="><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&is_video=false&description="><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=&body=Check out this article: http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title="><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title="><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title="><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title="><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&name=&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&t="><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&text=Prompt-Engineering"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title=Prompt-Engineering"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&is_video=false&description=Prompt-Engineering"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Prompt-Engineering&body=Check out this article: http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title=Prompt-Engineering"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title=Prompt-Engineering"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title=Prompt-Engineering"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&title=Prompt-Engineering"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&name=Prompt-Engineering&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://p5ych2022.github.io/2025/03/07/Prompt-Engineering/&t=Prompt-Engineering"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
