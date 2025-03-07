@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="前置 神经网络训练基本上是一门艺术  —— 《这就是 chatGPT》(Stephen Wolfram) 大多数情况下,神经网络的学问不是通过第一性原理推导出来,而是通过”试错”、并不断添加想法和技巧发现的,其中还有大量至今也无法解释原因。  “也许你听我说过，要从物理学的角度思考问题，这是第一性原理。即不要进行类比推理。你把事情细分到你可以想象的最基本元素，然后你从那里开始推理，这是确定某件事">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第一性原理">
+<meta property="og:url" content="http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="psych&#39;s blog">
+<meta property="og:description" content="前置 神经网络训练基本上是一门艺术  —— 《这就是 chatGPT》(Stephen Wolfram) 大多数情况下,神经网络的学问不是通过第一性原理推导出来,而是通过”试错”、并不断添加想法和技巧发现的,其中还有大量至今也无法解释原因。  “也许你听我说过，要从物理学的角度思考问题，这是第一性原理。即不要进行类比推理。你把事情细分到你可以想象的最基本元素，然后你从那里开始推理，这是确定某件事">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-03-07T13:02:24.000Z">
+<meta property="article:modified_time" content="2025-03-07T13:04:43.622Z">
+<meta property="article:author" content="psych">
+<meta property="article:tag" content="哲学">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>第一性原理</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="psych&#39;s blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Article</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/03/07/Prompt-Engineering/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/02/27/DDOS%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&text=第一性原理"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&title=第一性原理"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&is_video=false&description=第一性原理"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=第一性原理&body=Check out this article: http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&title=第一性原理"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&title=第一性原理"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&title=第一性原理"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&title=第一性原理"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&name=第一性原理&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&t=第一性原理"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">前置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">2.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%94%E7%BB%8E%E6%B3%95-%E5%BD%92%E7%BA%B3%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">演绎法 &amp; 归纳法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86-%E5%BD%92%E5%9B%A0%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">第一性原理 &amp; 归因法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%C2%B7%C2%B7%C2%B7"><span class="toc-number">5.</span> <span class="toc-text">···</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        第一性原理
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">psych</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-03-07T13:02:24.000Z" class="dt-published" itemprop="datePublished">2025-03-07</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Life/">Life</a> › <a class="category-link" href="/categories/Life/%E5%93%B2%E5%AD%A6/">哲学</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%93%B2%E5%AD%A6/" rel="tag">哲学</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <hr>
+<h4 id="前置"><a href="#前置" class="headerlink" title="前置"></a>前置</h4><ol>
+<li><p>神经网络训练基本上是一门艺术  —— 《这就是 chatGPT》(Stephen Wolfram)</p>
+<p>大多数情况下,神经网络的学问不是通过第一性原理推导出来,而是通过”试错”、并不断添加想法和技巧发现的,其中还有大量至今也无法解释原因。</p>
+</li>
+<li><p>“也许你听我说过，要从物理学的角度思考问题，这是第一性原理。即不要进行类比推理。你把事情细分到你可以想象的最基本元素，然后你从那里开始推理，这是确定某件事是否有意义的好方法。这种思考不容易，你可能无法对每件事都这么思考，因为这很花精力。但是如果你想创新知识，那么这是最好的思考方法。这个框架是由物理学家提出并发展的，他们因此找出了反直觉的事情，比如量子力学。”   ——  马斯克</p>
+</li>
+</ol>
+<h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>第一性原理: 回归事务最基本的条件, 将其拆分成各要素进行结构分析, 从而找到实现目标最优路径的方法.</p>
+<p>“在任何一个系统中,存在第一性原理,是一个最基本的命题或者假设,不能被省略,也不能被违反。”  —— 亚里士多德</p>
+<h4 id="演绎法-归纳法"><a href="#演绎法-归纳法" class="headerlink" title="演绎法 &amp; 归纳法"></a>演绎法 &amp; 归纳法</h4><ul>
+<li>经验参数是一种“<strong>归纳法思维”</strong>，由N个已知的数据或现象，推论出一个规律。(更像玄学</li>
+<li>第一性原理是一种”<strong>演绎法思维“</strong>，由1个或多个定律推演而来，或者它本身就是一个定律。(更像科学</li>
+</ul>
+<h4 id="第一性原理-归因法"><a href="#第一性原理-归因法" class="headerlink" title="第一性原理 &amp; 归因法"></a>第一性原理 &amp; 归因法</h4><p>不同于归因法(也是我常用的思维方式), 第一性原理并不是根据结果一层一层向上推导原因, 这样往往是线性的(至少我更习惯这样归因),根据结构推导出往上的几种原因, 也许再把原因抽象成一个更本质的原因, 但这样的方式因在实际应用中过于线性, 容易陷入自己认为的某一条逻辑链条而忽略其他本质.</p>
+<p>第一性原理先从最本质的原理出发, 一步一步向后推理,这样的方式往往会得到自己思维的舒适区之外的结论和过程. 总的来说整个思考过程的自由度增加了。</p>
+<h4 id="···"><a href="#···" class="headerlink" title="···"></a>···</h4><p>所以很多时候需要做的不是需要跳出舒适圈,而是在舒适圈中找到矛盾的本质,并通过本质找到一种新的解决方案. 这往往涉及到跳出中庸和平衡的思想(至少在带有更多社会性的问题上), 寻找本质需求之后再想办法用一种不带来新矛盾的方式解决原来的矛盾.</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Article</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">前置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">2.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%94%E7%BB%8E%E6%B3%95-%E5%BD%92%E7%BA%B3%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">演绎法 &amp; 归纳法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86-%E5%BD%92%E5%9B%A0%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">第一性原理 &amp; 归因法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%C2%B7%C2%B7%C2%B7"><span class="toc-number">5.</span> <span class="toc-text">···</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&text=第一性原理"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&title=第一性原理"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&is_video=false&description=第一性原理"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=第一性原理&body=Check out this article: http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&title=第一性原理"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&title=第一性原理"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&title=第一性原理"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&title=第一性原理"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&name=第一性原理&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://p5ych2022.github.io/2025/03/07/%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/&t=第一性原理"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2022-2025
+    psych
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Article</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+    </ul>
+    <ul>
+      
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_site_pv">
+            本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        </span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv" style='display:none'>
+                本站访客数<span id="busuanzi_value_site_uv"></span>人
+        </span>
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      
+    </ul>
+  </nav>
+</div>
+
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'p5ych2022/psych.green';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
