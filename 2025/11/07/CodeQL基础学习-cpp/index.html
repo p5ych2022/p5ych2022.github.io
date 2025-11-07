@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="教程官方：https:&#x2F;&#x2F;codeql.githubdocs.cn&#x2F;docs&#x2F;codeql-overview&#x2F; CodeQL 入门环境配置 codeql-cli：https:&#x2F;&#x2F;github.com&#x2F;github&#x2F;codeql-cli-binaries&#x2F;releases codeql-sdk：https:&#x2F;&#x2F;github.com&#x2F;github&#x2F;codeql.git  可分开安装在 &#x2F;us">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CodeQL基础学习-cpp">
+<meta property="og:url" content="http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/index.html">
+<meta property="og:site_name" content="psych&#39;s blog">
+<meta property="og:description" content="教程官方：https:&#x2F;&#x2F;codeql.githubdocs.cn&#x2F;docs&#x2F;codeql-overview&#x2F; CodeQL 入门环境配置 codeql-cli：https:&#x2F;&#x2F;github.com&#x2F;github&#x2F;codeql-cli-binaries&#x2F;releases codeql-sdk：https:&#x2F;&#x2F;github.com&#x2F;github&#x2F;codeql.git  可分开安装在 &#x2F;us">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-11-07T14:54:07.000Z">
+<meta property="article:modified_time" content="2025-11-07T15:02:20.393Z">
+<meta property="article:author" content="psych">
+<meta property="article:tag" content="代码扫描">
+<meta property="article:tag" content="cpp安全">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CodeQL基础学习-cpp</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="psych&#39;s blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Article</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/06/26/TJCTF-2025-web-WriteUp/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&text=CodeQL基础学习-cpp"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&title=CodeQL基础学习-cpp"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&is_video=false&description=CodeQL基础学习-cpp"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CodeQL基础学习-cpp&body=Check out this article: http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&title=CodeQL基础学习-cpp"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&title=CodeQL基础学习-cpp"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&title=CodeQL基础学习-cpp"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&title=CodeQL基础学习-cpp"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&name=CodeQL基础学习-cpp&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&t=CodeQL基础学习-cpp"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%99%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">教程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CodeQL-%E5%85%A5%E9%97%A8"><span class="toc-number"></span> <span class="toc-text">CodeQL 入门</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#QL-%E6%9F%A5%E8%AF%A2"><span class="toc-number">2.</span> <span class="toc-text">QL 查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Example"><span class="toc-number">3.</span> <span class="toc-text">Example</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-C-%E5%AD%A6%E4%B9%A0"><span class="toc-number"></span> <span class="toc-text">C &#x2F; C++ 学习</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.</span> <span class="toc-text">基础查询</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E6%9F%A5%E6%89%BE"><span class="toc-number">1.1.</span> <span class="toc-text">函数查找</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%9F%A5%E6%89%BE"><span class="toc-number">1.2.</span> <span class="toc-text">表达式查找</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="toc-number">2.</span> <span class="toc-text">数据流</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%95%B0%E6%8D%AE%E6%B5%81-%E4%B8%8E-Node"><span class="toc-number">2.1.</span> <span class="toc-text">本地数据流 与 Node</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%B1%A1%E7%82%B9%E8%B7%9F%E8%B8%AA"><span class="toc-number">2.2.</span> <span class="toc-text">本地污点跟踪</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#e-g-%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5"><span class="toc-number">3.</span> <span class="toc-text">e.g. 命令注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B1%A1%E7%82%B9%E8%BF%BD%E8%B8%AA"><span class="toc-number">4.</span> <span class="toc-text">污点追踪</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number"></span> <span class="toc-text">参考</span></a>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        CodeQL基础学习-cpp
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">psych</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-11-07T14:54:07.000Z" class="dt-published" itemprop="datePublished">2025-11-07</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/cpp%E5%AE%89%E5%85%A8/">cpp安全</a> › <a class="category-link" href="/categories/cpp%E5%AE%89%E5%85%A8/%E4%BB%A3%E7%A0%81%E6%89%AB%E6%8F%8F/">代码扫描</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/cpp%E5%AE%89%E5%85%A8/" rel="tag">cpp安全</a>, <a class="p-category" href="/tags/%E4%BB%A3%E7%A0%81%E6%89%AB%E6%8F%8F/" rel="tag">代码扫描</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h4 id="教程"><a href="#教程" class="headerlink" title="教程"></a>教程</h4><p>官方：<a target="_blank" rel="noopener" href="https://codeql.githubdocs.cn/docs/codeql-overview/">https://codeql.githubdocs.cn/docs/codeql-overview/</a></p>
+<h3 id="CodeQL-入门"><a href="#CodeQL-入门" class="headerlink" title="CodeQL 入门"></a>CodeQL 入门</h3><h4 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h4><ul>
+<li>codeql-cli：<a target="_blank" rel="noopener" href="https://github.com/github/codeql-cli-binaries/releases">https://github.com/github/codeql-cli-binaries/releases</a></li>
+<li>codeql-sdk：<a target="_blank" rel="noopener" href="https://github.com/github/codeql.git">https://github.com/github/codeql.git</a></li>
+</ul>
+<p>可分开安装在 &#x2F;usr&#x2F;local 目录下，并写入环境变量。</p>
+<p>貌似要很好的适配只能使用vscode，cursor之类的貌似不太适配：</p>
+<blockquote>
+<p>由于 CodeQL 是 GitHub 开源的,而 GitHub 又被微软全资收购了,且 Visual Studio Code 又是微软开源的,所以 CodeQL 只对 Visual Studio Code 做了全面友好的支持,我们如果需要本地使用CodeQL，那就不得不下载 Visual Studio Code!</p>
+</blockquote>
+<p>CodeQL 分析包括三个步骤</p>
+<ol>
+<li>通过创建 CodeQL 数据库来准备代码</li>
+<li>针对数据库运行 CodeQL 查询</li>
+<li>解释查询结果</li>
+</ol>
+<p>因此第一步需要创建数据库来进行查询，它把源码转换成“可查询的结构化数据”。由于c++是需要编译的语言，正常情况codeql需要先对c++进行编译，然后构建对应的 database，这样后续的分析就会包括编译生成的 Generated code。但主包手里的 C++ 仓库编译不了，卡在这一步很久，查阅文档发现目前 C++ 已经支持不用 build就可以查询。<a target="_blank" rel="noopener" href="https://github.blog/changelog/2025-10-14-codeql-scanning-rust-and-c-c-without-builds-is-now-generally-available/">https://github.blog/changelog/2025-10-14-codeql-scanning-rust-and-c-c-without-builds-is-now-generally-available/</a></p>
+<p>只需要设置 <code>--build-mode none</code> 就可以直接开始构建了。</p>
+<p>一些 CodeQL CLI 的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; codeql database create codeql-dbs --source-root=src \\</span><br><span class="line">    --db-cluster --language=java --<span class="built_in">command</span>=./myBuildScript</span><br><span class="line">    </span><br><span class="line">&gt; codeql database analyze codeql-dbs/java java-code-scanning.qls \\</span><br><span class="line">    --format=sarif-latest --sarif-category=java --output=java-results.sarif</span><br><span class="line"></span><br><span class="line">&gt; codeql github upload-results \\</span><br><span class="line">    --repository=my-org/example-repo \\</span><br><span class="line">    --ref=refs/heads/main --commit=deb275d2d5fe9a522a0b7bd8b6b6a1c939552718 \\</span><br><span class="line">    --sarif=java-results.sarif</span><br></pre></td></tr></table></figure>
+
+<p><em>不过要想做全面扫描，肯定还是带编译的建库更好，所以编译这一块还是要想一下怎么搞。</em></p>
+<h4 id="QL-查询"><a href="#QL-查询" class="headerlink" title="QL 查询"></a>QL 查询</h4><p>常见的查询方式类似于</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> <span class="comment">/* ... variable declarations ... */</span></span><br><span class="line"><span class="keyword">where</span> <span class="comment">/* ... logical formulas ... */</span></span><br><span class="line"><span class="keyword">select</span> <span class="comment">/* ... expressions ... */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* ... e.g. ... */</span></span><br><span class="line"><span class="keyword">from</span> <span class="type">date</span> <span class="keyword">start</span>, <span class="type">date</span> <span class="keyword">end</span></span><br><span class="line"><span class="keyword">where</span> <span class="keyword">start</span> <span class="operator">=</span> &quot;10/06/2017&quot;.toDate() <span class="keyword">and</span> <span class="keyword">end</span> <span class="operator">=</span> &quot;28/09/2017&quot;.toDate()</span><br><span class="line"><span class="keyword">select</span> start.daysTo(<span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+
+<p>变量的类型常见的有：</p>
+<ul>
+<li>字符串 - string</li>
+<li>浮点数 - float</li>
+<li>布尔值 - boolean</li>
+<li>日期(日&#x2F;月&#x2F;年) - date</li>
+</ul>
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">import tutorial</span><br><span class="line"></span><br><span class="line">predicate isSouthern(Person p)&#123;</span><br><span class="line"> p.getLocation() <span class="operator">=</span> <span class="string">&#x27;south&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Southern Extends People&#123;</span><br><span class="line">	Southern() &#123;</span><br><span class="line">		isSouthern(this)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Child Extends People &#123;</span><br><span class="line">	Child()&#123;</span><br><span class="line">		this.age() <span class="operator">&lt;</span> <span class="number">10</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	override predicate isAllowedIn(string region)&#123;</span><br><span class="line">		region <span class="operator">=</span> this.getLocation()	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">predicate isBalds(Person p)&#123;</span><br><span class="line">	<span class="keyword">not</span> <span class="keyword">exists</span>(string c <span class="operator">|</span> p.getHairColor() <span class="operator">=</span> c)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> Southern s</span><br><span class="line"><span class="keyword">where</span> s.isAllowedIn(&quot;north&quot;) <span class="keyword">and</span> isBalds(s)</span><br><span class="line"><span class="keyword">select</span> s</span><br></pre></td></tr></table></figure>
+
+<h3 id="C-C-学习"><a href="#C-C-学习" class="headerlink" title="C &#x2F; C++ 学习"></a>C &#x2F; C++ 学习</h3><h4 id="基础查询"><a href="#基础查询" class="headerlink" title="基础查询"></a>基础查询</h4><h5 id="函数查找"><a href="#函数查找" class="headerlink" title="函数查找"></a>函数查找</h5><p>使用 <code>Function</code> 和 <code>FunctionCall</code> 来查找对函数 <code>sprintf</code> 的调用。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> FunctionCall fc</span><br><span class="line"><span class="keyword">where</span> fc.getTaeget().getQualifiedName() <span class="operator">=</span> &quot;spinrf&quot;</span><br><span class="line"><span class="keyword">select</span> fc,&quot;sprintf called with variable format string&quot;</span><br></pre></td></tr></table></figure>
+
+<h5 id="表达式查找"><a href="#表达式查找" class="headerlink" title="表达式查找"></a>表达式查找</h5><p>查找将 0 赋值给整数</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line"><span class="keyword">from</span> AssignExpr e</span><br><span class="line"><span class="keyword">where</span> e.getRValue().getValue().toInt() <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">	<span class="keyword">and</span> e.getLValue().getType().getUnspecifiedType() instamceof IntegralType</span><br><span class="line"><span class="keyword">select</span> e, &quot;Assigning the value 0 to an integer&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="数据流"><a href="#数据流" class="headerlink" title="数据流"></a>数据流</h4><p>使用数据流分析来跟踪可能存在恶意或不安全数据流，这些数据流会导致代码库中的漏洞。</p>
+<h5 id="本地数据流-与-Node"><a href="#本地数据流-与-Node" class="headerlink" title="本地数据流 与 Node"></a>本地数据流 与 Node</h5><p><strong>本地数据流（local dataflow）</strong>：只考虑同一个函数（或同一个作用域）内部的数据如何流动。比如：函数体里 <code>a = b; c = a;</code>，都是本地数据流。本地数据流库位于模块 <code>DataFlow</code> 中，该模块定义了表示数据可以流经的任何元素的类 <code>Node</code>（表示“数据流图上一个节点”的抽象。一个节点可以表示“某个表达式的值”或“某个参数槽”。）。 <code>Node</code> 分为表达式节点 (<code>ExprNode</code>, <code>IndirectExprNode</code>) 和参数节点 (<code>ParameterNode</code>, <code>IndirectParameterNode</code>)。间接节点表示经过固定数量的指针解引用后的表达式或参数。<code>Node</code> 类提供一些成员谓词把它映射回源码层面的 <code>Expr</code> 或 <code>Parameter</code>。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class Node &#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 如果这个 Node 对应一个表达式（例如变量读、字面量、调用表达式），返回该 Expr。否则为空/不匹配。</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  Expr asExpr() &#123; ... &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 如果这个 Node 表示“对某个表达式解引用 index 次之后”的位置，则返回解引用前的 Expr。</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  Expr asIndirectExpr(<span class="type">int</span> index) &#123; ... &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 把 Node 映射回函数参数 Parameter（比如第 0 个参数 slot），或映射为解引用若干次后的参数槽（间接参数）。</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">Parameter</span> asParameter() &#123; ... &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * the parameter `index` times.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">Parameter</span> asParameter(<span class="type">int</span> index) &#123; ... &#125;</span><br><span class="line"></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="本地污点跟踪"><a href="#本地污点跟踪" class="headerlink" title="本地污点跟踪"></a>本地污点跟踪</h5><p>本地污点追踪（local taint）在 local dataflow 基础上做两方面扩展：</p>
+<ol>
+<li><strong>包含非“值传递”的传播</strong>：数据“污点”不总是以“值从一个变量拷贝到另一个变量”的形式出现。某些函数使用值但不复制它们的值（non-value-preserving）：例如 <code>malloc(i * sizeof(...))</code>，这里 <code>i</code> 并没有“值传递”给 <code>malloc</code> 的返回值，但 <code>i</code> 的值影响了堆大小 —— 这是语义上“污点到用来分配大小的参数”的传播（对安全问题很重要，称作非值保留传播）。</li>
+<li><strong>扩展节点种类</strong>：localTaintStep 可能定义额外的“传播原语”，例如“函数参数作为长度参数会被认为是传播到内存分配行为”，或“某些API会把参数当作配置&#x2F;长度&#x2F;size&#x2F;flags”等等。</li>
+</ol>
+<p>可以按以下方式查找从参数 <code>source</code> 到表达式 <code>sink</code> 在零个或多个本地步骤中的污点传播，其中 <code>nodeFrom</code> 和 <code>nodeTo</code> 的类型为 <code>DataFlow::Node</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nodeFrom.asParameter() <span class="operator">=</span> source </span><br><span class="line"><span class="operator">*</span><span class="operator">*</span><span class="keyword">and</span><span class="operator">*</span><span class="operator">*</span> nodeTo.asExpr() <span class="operator">=</span> sink </span><br><span class="line"><span class="operator">*</span><span class="operator">*</span><span class="keyword">and</span><span class="operator">*</span><span class="operator">*</span> TaintTracking::localTaint(nodeFrom, nodeTo)</span><br></pre></td></tr></table></figure>
+
+<h4 id="e-g-命令注入"><a href="#e-g-命令注入" class="headerlink" title="e.g. 命令注入"></a>e.g. 命令注入</h4><p>以通过 system 调用存在变量的查询为例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> FunctionCall fc</span><br><span class="line"><span class="keyword">where</span> fc.getTarget().getName().<span class="keyword">matches</span>(&quot;system&quot;) <span class="keyword">and</span> <span class="keyword">not</span> fc.getArgument(<span class="number">0</span>).isConstant()</span><br><span class="line"><span class="keyword">select</span> fc.getEnclosingFunction(), fc, fc.getArgument(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="污点追踪"><a href="#污点追踪" class="headerlink" title="污点追踪"></a>污点追踪</h4><p>要进一步判断变量是否外部可控，需要使用 <code>codeql</code> 的污点跟踪功能，由 <code>TaintTracking</code> 模块提供。<code>codeql</code> 支持 <code>local</code> 和 <code>global</code> 两种模式，期中 local 的污点追踪只能追踪函数内的代码，而 global 则会在整个源码中进行追踪。以 <code>local</code> 模式为例，<code>TaintTracking::localTaint(source, sink)</code> 含义就是查找从 <code>source</code> 到 <code>sink</code> 的查询。如：用户可控输入的参数 <code>userinput</code> 为 source，系统调用执行变量的 <code>system</code> 函数是 <code>sink</code> 点。污点追踪可以查询 <code>system(sink)</code> 的变量由 <code>userinput(source)</code> 返回中控制的调用点。</p>
+<p>但如果这一系列过程不是在一个函数内完成的，比如 <code>system</code> 调用（<code>sink</code>）或 <code>get_user_input</code> （<code>source</code>）的操作封装成了函数，这样使用 <code>local</code> 模式就会漏（无法追踪函数外的部分，且很容易漏掉新的 <code>wrapper</code> ），除非能把封装的函数也考虑在内，因此可以选用 <code>global</code> 模式进行查询，或者把对应封装的函数也包含进去。</p>
+<blockquote>
+<p>污点传播的过程大概可以分为三个阶段：</p>
+<ol>
+<li>定位<code>source</code>点，<code>source</code>点代表来源，一般是用户可控的输入作为污点。</li>
+<li>定位<code>sink</code>点，<code>sink</code>点一般是敏感函数，比如sql查询等。</li>
+<li>污点传播&#x2F;回溯，当判断 <code>source</code> 点能传播到 <code>sink</code> 的时候，报告漏洞和对应传播路径。如果存在一些安全过滤，那么需要再加入 <code>sanitizer</code>&#x2F;<code>clean</code> 点，来去除污点。</li>
+</ol>
+<p>——by woodpeckerjs</p>
+</blockquote>
+<p>简易代码实现：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line">import semmle.code.cpp.dataflow.TaintTracking</span><br><span class="line"></span><br><span class="line">class SystemCfg extend TaintTracking::Configuration &#123;</span><br><span class="line">	systemCfg() &#123; this <span class="operator">=</span> &quot;SystemCfg&quot;&#125;</span><br><span class="line">	</span><br><span class="line">	override predicate isSource(DtaFlow::Dode source)&#123;</span><br><span class="line">		source.asExpr().(FunctionCall).getTarget().getName().<span class="keyword">matches</span>(&quot;get_user_input&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	override predicate isSink(DataFlow::Node sink) &#123;</span><br><span class="line">    <span class="keyword">exists</span>(FunctionCall <span class="keyword">call</span> <span class="operator">|</span></span><br><span class="line">      sink.asExpr() <span class="operator">=</span> call.getArgument(<span class="number">0</span>) <span class="keyword">and</span></span><br><span class="line">      call.getTarget().getName() <span class="operator">=</span> &quot;system&quot;</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> DataFlow::PathNode sink, DataFlow::PathNode source, SystemCfg cfg</span><br><span class="line"><span class="keyword">where</span> cfg.hashFlowPath(source, sink)</span><br><span class="line"><span class="keyword">select</span> source, sink</span><br></pre></td></tr></table></figure>
+
+<p>继承 <code>TaintTracking::Configuration</code> 用来定义“一个污点分析的配置”，这个配置会告诉数据流引擎哪些节点是source，哪些是sink，以及其他选项。在下面覆写 <code>isSource</code> 和 <code>isSink</code> ，最后通过<code>hashFlowPath</code> 直接查询从 <code>source</code> 到 <code>sink</code> 的数据流 path。（它能处理跨函数调用、通过参数&#x2F;返回、通过字段&#x2F;成员、通过堆分配&#x2F;加载&#x2F;存储等传播，只要配置允许，CodeQL 的 C++ 数据流 extractor 已经支持大多数传播原语）</p>
+<p>但是上述查询还有很多不完善的地方，如source和sink包含的范围；数据流过程中经过一些escape操作的情况需要过滤（<code>sanitizers</code>）；某些函数会把污点从参数传回返回值或从参数到参数（<code>propagation</code>）</p>
+<p>较详细版本实现：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">import cpp</span><br><span class="line">import semmle.code.cpp.dataflow.TaintTracking</span><br><span class="line"></span><br><span class="line">class SystemCfg extends TaintTracking::Configuration &#123;</span><br><span class="line">  SystemCfg() &#123; this <span class="operator">=</span> &quot;SystemCfg&quot; &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span> <span class="number">1</span>) sources: 把常见的用户可控输入都当作 source</span><br><span class="line">  override predicate isSource(DataFlow::Node source) &#123;</span><br><span class="line">    ···</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="operator">/</span><span class="operator">/</span> <span class="number">2</span>) sinks: <span class="keyword">system</span> 及自家 wrapper</span><br><span class="line">  override predicate isSink(DataFlow::Node sink) &#123;</span><br><span class="line">	  ···</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="operator">/</span><span class="operator">/</span> <span class="number">3</span>) sanitizers: 显式白名单<span class="operator">/</span>转义函数，若数据经过这些函数则认为被净化</span><br><span class="line">	override predicate isSanitizer(DataFlow::Node node)&#123;</span><br><span class="line">		<span class="operator">/</span><span class="operator">/</span> 例如对 shell 参数做转义的函数</span><br><span class="line">    <span class="keyword">exists</span>(FunctionCall f <span class="operator">|</span></span><br><span class="line">      node.asExpr() <span class="operator">=</span> f <span class="keyword">and</span></span><br><span class="line">      f.getTarget().getName().<span class="keyword">matches</span>(&quot;escape&quot;)</span><br><span class="line">    )</span><br><span class="line">    <span class="operator">/</span><span class="operator">/</span> 例如检查输入是否合法的校验函数（返回 bool 的验证函数）</span><br><span class="line">    <span class="keyword">or</span> <span class="keyword">exists</span>(FunctionCall f <span class="operator">|</span></span><br><span class="line">      node.asExpr() <span class="operator">=</span> f <span class="keyword">and</span></span><br><span class="line">      f.getTarget().getName().<span class="keyword">matches</span>(&quot;whitelist&quot;)</span><br><span class="line">    )</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="operator">/</span><span class="operator">/</span> <span class="number">4</span>) propagation: 显式告诉引擎某些库函数会把污点从某个实参传递到另一个实参或返回值。字符串库函数、容器方法、格式化函数都是常见传播点。</span><br><span class="line">  ovrride predicate isPropagation(DataFlow::Node src, DataFlow::Node dst)&#123;</span><br><span class="line">	  <span class="operator">/</span><span class="operator">/</span> e.g<span class="number">.1</span> 直接字符串拷贝： strcpy(dst, src)</span><br><span class="line">    <span class="keyword">exists</span>(FunctionCall <span class="keyword">call</span> <span class="operator">|</span></span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span> src 对应 <span class="keyword">call</span> 的第二个参数（strcpy(dst, src)）</span><br><span class="line">      src.asExpr() <span class="operator">=</span> call.getArgument(<span class="number">1</span>) <span class="keyword">and</span></span><br><span class="line">      <span class="operator">/</span><span class="operator">/</span> dst 对应 <span class="keyword">call</span> 的第一个参数</span><br><span class="line">      dst.asExpr() <span class="operator">=</span> call.getArgument(<span class="number">0</span>) <span class="keyword">and</span></span><br><span class="line">      call.getTarget().getName() <span class="operator">=</span> &quot;strcpy&quot;</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    <span class="operator">/</span><span class="operator">/</span> e.g<span class="number">.2</span> C<span class="operator">+</span><span class="operator">+</span> std::string 的 assign<span class="operator">/</span>append<span class="operator">/</span>replace（示例）</span><br><span class="line">    <span class="keyword">or</span> <span class="keyword">exists</span>(MethodAccess ma <span class="operator">|</span></span><br><span class="line">      src.asExpr() <span class="operator">=</span> ma.getArgument(<span class="number">0</span>) <span class="keyword">and</span></span><br><span class="line">      dst.asExpr() <span class="operator">=</span> ma.getQualifier() <span class="keyword">and</span></span><br><span class="line">      ma.getMethod().getName() <span class="operator">=</span> &quot;append&quot;</span><br><span class="line">    )</span><br><span class="line">    ···</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> DataFlow::PathNode src, DataFlow::PathNode sink, SystemCfg cfg</span><br><span class="line"><span class="keyword">where</span> cfg.hasFlowPath(src, sink)</span><br><span class="line"><span class="keyword">select</span> src, sink, sink.getNode(), sec.getNode()</span><br></pre></td></tr></table></figure>
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.blog/changelog/2025-10-14-codeql-scanning-rust-and-c-c-without-builds-is-now-generally-available/">https://github.blog/changelog/2025-10-14-codeql-scanning-rust-and-c-c-without-builds-is-now-generally-available/</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages">https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/you-fish/p/18349266">https://www.cnblogs.com/you-fish/p/18349266</a></li>
+<li><a target="_blank" rel="noopener" href="https://xz.aliyun.com/news/8774">https://xz.aliyun.com/news/8774</a></li>
+</ul>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Article</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%99%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">教程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CodeQL-%E5%85%A5%E9%97%A8"><span class="toc-number"></span> <span class="toc-text">CodeQL 入门</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#QL-%E6%9F%A5%E8%AF%A2"><span class="toc-number">2.</span> <span class="toc-text">QL 查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Example"><span class="toc-number">3.</span> <span class="toc-text">Example</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-C-%E5%AD%A6%E4%B9%A0"><span class="toc-number"></span> <span class="toc-text">C &#x2F; C++ 学习</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.</span> <span class="toc-text">基础查询</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E6%9F%A5%E6%89%BE"><span class="toc-number">1.1.</span> <span class="toc-text">函数查找</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%9F%A5%E6%89%BE"><span class="toc-number">1.2.</span> <span class="toc-text">表达式查找</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="toc-number">2.</span> <span class="toc-text">数据流</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%95%B0%E6%8D%AE%E6%B5%81-%E4%B8%8E-Node"><span class="toc-number">2.1.</span> <span class="toc-text">本地数据流 与 Node</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%B1%A1%E7%82%B9%E8%B7%9F%E8%B8%AA"><span class="toc-number">2.2.</span> <span class="toc-text">本地污点跟踪</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#e-g-%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5"><span class="toc-number">3.</span> <span class="toc-text">e.g. 命令注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B1%A1%E7%82%B9%E8%BF%BD%E8%B8%AA"><span class="toc-number">4.</span> <span class="toc-text">污点追踪</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number"></span> <span class="toc-text">参考</span></a>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&text=CodeQL基础学习-cpp"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&title=CodeQL基础学习-cpp"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&is_video=false&description=CodeQL基础学习-cpp"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CodeQL基础学习-cpp&body=Check out this article: http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&title=CodeQL基础学习-cpp"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&title=CodeQL基础学习-cpp"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&title=CodeQL基础学习-cpp"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&title=CodeQL基础学习-cpp"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&name=CodeQL基础学习-cpp&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://p5ych2022.github.io/2025/11/07/CodeQL%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0-cpp/&t=CodeQL基础学习-cpp"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2022-2025
+    psych
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Article</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+    </ul>
+    <ul>
+      
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_site_pv">
+            本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        </span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv" style='display:none'>
+                本站访客数<span id="busuanzi_value_site_uv"></span>人
+        </span>
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      
+    </ul>
+  </nav>
+</div>
+
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'p5ych2022/psych.green';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
