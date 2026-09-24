@@ -72,6 +72,19 @@
     
 	<!-- mathjax -->
 	
+		<script>
+		  window.MathJax = {
+			tex: {
+			  inlineMath: [['$', '$']],
+			  displayMath: [['$$', '$$']]
+			},
+			options: {
+			  skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+			}
+		  };
+		</script>
+		<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+	
 <meta name="generator" content="Hexo 6.3.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
@@ -877,6 +890,7 @@
           (document.getElementById('utterances_thread')).appendChild(script);
       }());
   </script>
+
 
 </body>
 </html>
