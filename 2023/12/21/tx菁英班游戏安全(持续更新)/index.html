@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="第一次作业1.分析并调试程序，找到flag使用技术：IDA动态调试crackme.exe 前置知识点  步骤  1.找到文件夹IDA目录下的dbgsrv文件夹，找到对应版本的win_32或者64remote.exe，点击运行。 2.打开ida，将exe拖入，Debugger → Select a debugger → Remote windows debugger 3.Debugger → pro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="菁英班游戏安全第一次作业">
+<meta property="og:url" content="https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/index.html">
+<meta property="og:site_name" content="psych&#39;s blog">
+<meta property="og:description" content="第一次作业1.分析并调试程序，找到flag使用技术：IDA动态调试crackme.exe 前置知识点  步骤  1.找到文件夹IDA目录下的dbgsrv文件夹，找到对应版本的win_32或者64remote.exe，点击运行。 2.打开ida，将exe拖入，Debugger → Select a debugger → Remote windows debugger 3.Debugger → pro">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231215213439983.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231215214312875.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231215214839633.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231215181957773.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231217014350255.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231217014435627.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231219045931532.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231219051036666.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231219050607270.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231219053305127.png">
+<meta property="article:published_time" content="2023-12-21T13:49:13.000Z">
+<meta property="article:modified_time" content="2026-09-24T06:32:20.348Z">
+<meta property="article:author" content="psych">
+<meta property="article:tag" content="re">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231215213439983.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>菁英班游戏安全第一次作业</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Article</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/01/01/2023%E5%B9%B4%E5%BA%A6/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/12/21/%E4%B8%80%E5%9C%BAXSS%E5%92%8CCSRF%E5%BC%95%E5%8F%91%E7%9A%84%E8%A1%80%E6%A1%88/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&text=菁英班游戏安全第一次作业"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&title=菁英班游戏安全第一次作业"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&is_video=false&description=菁英班游戏安全第一次作业"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=菁英班游戏安全第一次作业&body=Check out this article: https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&title=菁英班游戏安全第一次作业"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&title=菁英班游戏安全第一次作业"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&title=菁英班游戏安全第一次作业"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&title=菁英班游戏安全第一次作业"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&name=菁英班游戏安全第一次作业&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&t=菁英班游戏安全第一次作业"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%9C%E4%B8%9A"><span class="toc-number">1.</span> <span class="toc-text">第一次作业</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%88%86%E6%9E%90%E5%B9%B6%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F%EF%BC%8C%E6%89%BE%E5%88%B0flag"><span class="toc-number">1.1.</span> <span class="toc-text">1.分析并调试程序，找到flag</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">1.1.1.</span> <span class="toc-text">前置知识点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%9C%AC%E9%A2%98"><span class="toc-number">1.1.2.</span> <span class="toc-text">关于本题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%BF%9C%E7%A8%8B%E6%B3%A8%E5%85%A5%E6%A8%A1%E5%9D%97"><span class="toc-number">1.2.</span> <span class="toc-text">2.远程注入模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A6%81%E6%B1%82"><span class="toc-number">1.2.1.</span> <span class="toc-text">要求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.2.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%9C%AC%E9%A2%98-1"><span class="toc-number">1.2.3.</span> <span class="toc-text">关于本题</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B3%A8%E5%85%A5%E6%96%87%E4%BB%B6%EF%BC%9Aevil-cpp-%E7%94%9F%E6%88%90evil-exe"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">注入文件：evil.cpp(生成evil.exe)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#dll%E6%96%87%E4%BB%B6%EF%BC%9Adllmain-cpp-%E7%94%9F%E6%88%90dllmain-exe"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">dll文件：dllmain.cpp(生成dllmain.exe)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E4%B8%9A%E7%BB%93%E6%9E%9C"><span class="toc-number">1.2.4.</span> <span class="toc-text">作业结果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Hook%E7%A8%8B%E5%BA%8F"><span class="toc-number">1.3.</span> <span class="toc-text">3.Hook程序</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-1"><span class="toc-number">1.3.1.</span> <span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#DLL%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">DLL注入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Hook%E6%8A%80%E6%9C%AF"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">Hook技术</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%AC%E9%A2%98"><span class="toc-number">1.3.2.</span> <span class="toc-text">本题</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E6%95%88%E6%9E%9C"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">最终效果</span></a></li></ol></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        菁英班游戏安全第一次作业
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">psych</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-12-21T13:49:13.000Z" class="dt-published" itemprop="datePublished">2023-12-21</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/re/">re</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/re/" rel="tag">re</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="第一次作业"><a href="#第一次作业" class="headerlink" title="第一次作业"></a>第一次作业</h2><h3 id="1-分析并调试程序，找到flag"><a href="#1-分析并调试程序，找到flag" class="headerlink" title="1.分析并调试程序，找到flag"></a>1.分析并调试程序，找到flag</h3><p>使用技术：IDA动态调试crackme.exe</p>
+<h4 id="前置知识点"><a href="#前置知识点" class="headerlink" title="前置知识点"></a>前置知识点</h4><blockquote>
+<p> 步骤</p>
+</blockquote>
+<p>1.找到文件夹IDA目录下的dbgsrv文件夹，找到对应版本的win_32或者64remote.exe，点击运行。</p>
+<p>2.打开ida，将exe拖入，Debugger → Select a debugger → Remote windows debugger</p>
+<p>3.Debugger → process options → 填写三行(第一，二行为 文件的路径，第三行为空，也可设置为文件对应的根目录) 和 Hostname设为127.0.0.1（代表本机） → ok</p>
+<p>4.附加程序：先运行我们要调试的软件，然后Debugger → Attach to process… → 选中我们要调试的程序 → attach</p>
+<blockquote>
+<p> 快捷键</p>
+</blockquote>
+<p>1.F2下断点<br>2.F7，f8单步步入<br>3.N重名<br>4.g跳到地址和函数名<br>5.u取消把函数汇编变成机器码<br>6.c就是把机器码变成汇编<br>7.F5<br>8.p分析函数，把机器码那些东西翻译成函数<br>9.ctrl+s看见系统所有的模块<br>10.ctrl+f搜索<br>11.单步调试注意右上角，寄存器变蓝色表示被改了<br>12.otions-&gt;number of opcode bytes可以查看机器码，填入4一行看4个机器码<br>13.在hex view-1按F2可以修改机器码，再次按F2确定修改<br>14.alt+g看是thumb还是arm指令<br>15.在函数名上按X可以看见上层调用<br>16.在f5伪c&#x2F;c++代码的情况下，注释是&#x2F;，汇编情况下注释是;<br>17.f4移动到光标处<br>18.在寄存器窗口按E可以修改寄存器的值<br>19.在内存窗口f2可以修改内存的值</p>
+<p>ctrl+F7：运行至函数结束，用来跳出函数</p>
+<p>ctrl+F2：重新开始调试</p>
+<h4 id="关于本题"><a href="#关于本题" class="headerlink" title="关于本题"></a>关于本题</h4><ul>
+<li>进入IDA动态debug，打断点到<code>sub_7FF755DA14D0()</code>发现这个函数进行了printf(‘请输入flag:’)操作</li>
+<li>猜测下一个函数就进行flag输入的验证，即<code>sub_7FF755DA1020(&amp;v34);</code></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line">sub_7FF755DA1020(&amp;v34);</span><br><span class="line">  CreateThread(<span class="number">0</span>i64, <span class="number">0</span>i64, StartAddress, <span class="number">0</span>i64, <span class="number">0</span>, <span class="number">0</span>i64);</span><br><span class="line">  sub_7FF755DA1070(&amp;unk_7FF755DC5600, v37);</span><br><span class="line">  v35[<span class="number">0</span>] = xmmword_7FF755DC5618;</span><br><span class="line">  v36 = <span class="number">85</span>;</span><br><span class="line">  v35[<span class="number">1</span>] = xmmword_7FF755DC5628;</span><br><span class="line">  <span class="keyword">if</span> ( v1 &lt; <span class="number">2</span> )</span><br><span class="line">    <span class="keyword">goto</span> LABEL_9;</span><br><span class="line">  v15 = (<span class="type">char</span> *)v35 + <span class="number">4</span>;</span><br><span class="line">  v16 = _mm_load_si128((<span class="type">const</span> __m128i *)&amp;xmmword_7FF755DC5670);</span><br><span class="line">  v17 = _mm_load_si128((<span class="type">const</span> __m128i *)&amp;xmmword_7FF755DC56C0);</span><br><span class="line">  v18 = _mm_load_si128((<span class="type">const</span> __m128i *)&amp;xmmword_7FF755DC5690);</span><br><span class="line">  v34 = _mm_load_si128((<span class="type">const</span> __m128i *)&amp;xmmword_7FF755DC56B0);</span><br><span class="line">  v19 = v34.m128i_i32[<span class="number">0</span>];</span><br><span class="line">  v20 = _mm_cvtsi32_si128(<span class="number">5u</span>);</span><br><span class="line">  v21 = _mm_cvtsi32_si128(<span class="number">0x1F</span>u);</span><br><span class="line">  <span class="keyword">do</span></span><br><span class="line">  &#123;</span><br><span class="line">    v15 += <span class="number">8</span>;</span><br><span class="line">    v22 = _mm_add_epi32(_mm_shuffle_epi32(_mm_cvtsi32_si128(v0), <span class="number">0</span>), v16);</span><br><span class="line">    v23 = _mm_add_epi32(_mm_shuffle_epi32(_mm_cvtsi32_si128(v0 + <span class="number">4</span>), <span class="number">0</span>), v16);</span><br><span class="line">    v0 += <span class="number">8</span>;</span><br><span class="line">    v24 = _mm_sra_epi32(</span><br><span class="line">            _mm_add_epi32(</span><br><span class="line">              (__m128i)_mm_shuffle_ps(</span><br><span class="line">                         (__m128)_mm_mul_epi32(_mm_unpacklo_epi32(v22, v22), v17),</span><br><span class="line">                         (__m128)_mm_mul_epi32(_mm_unpackhi_epi32(v22, v22), v17),</span><br><span class="line">                         <span class="number">221</span>),</span><br><span class="line">              v22),</span><br><span class="line">            v20);</span><br><span class="line">    v25 = _mm_and_si128(</span><br><span class="line">            _mm_shuffle_epi32(</span><br><span class="line">              _mm_shufflehi_epi16(</span><br><span class="line">                _mm_shufflelo_epi16(</span><br><span class="line">                  _mm_sub_epi32(v22, _mm_mullo_epi32(_mm_add_epi32(_mm_srl_epi32(v24, v21), v24), v18)),</span><br><span class="line">                  <span class="number">216</span>),</span><br><span class="line">                <span class="number">216</span>),</span><br><span class="line">              <span class="number">216</span>),</span><br><span class="line">            (__m128i)xmmword_7FF755DC56A0);</span><br><span class="line">    *((_DWORD *)v15 - <span class="number">3</span>) = _mm_cvtsi128_si32(</span><br><span class="line">                             _mm_xor_si128(</span><br><span class="line">                               _mm_add_epi8(_mm_packus_epi16(v25, v25), _mm_cvtsi32_si128(v19)),</span><br><span class="line">                               _mm_cvtsi32_si128(*((_DWORD *)v15 - <span class="number">3</span>))));</span><br><span class="line">    v26 = _mm_sra_epi32(</span><br><span class="line">            _mm_add_epi32(</span><br><span class="line">              (__m128i)_mm_shuffle_ps(</span><br><span class="line">                         (__m128)_mm_mul_epi32(_mm_unpacklo_epi32(v23, v23), v17),</span><br><span class="line">                         (__m128)_mm_mul_epi32(_mm_unpackhi_epi32(v23, v23), v17),</span><br><span class="line">                         <span class="number">221</span>),</span><br><span class="line">              v23),</span><br><span class="line">            v20);</span><br><span class="line">    v27 = _mm_and_si128(</span><br><span class="line">            _mm_shuffle_epi32(</span><br><span class="line">              _mm_shufflehi_epi16(</span><br><span class="line">                _mm_shufflelo_epi16(</span><br><span class="line">                  _mm_sub_epi32(v23, _mm_mullo_epi32(_mm_add_epi32(_mm_srl_epi32(v26, v21), v26), v18)),</span><br><span class="line">                  <span class="number">216</span>),</span><br><span class="line">                <span class="number">216</span>),</span><br><span class="line">              <span class="number">216</span>),</span><br><span class="line">            (__m128i)xmmword_7FF755DC56A0);</span><br><span class="line">    *((_DWORD *)v15 - <span class="number">2</span>) = _mm_cvtsi128_si32(</span><br><span class="line">                             _mm_xor_si128(</span><br><span class="line">                               _mm_add_epi8(_mm_packus_epi16(v27, v27), _mm_cvtsi32_si128(v19)),</span><br><span class="line">                               _mm_cvtsi32_si128(*((_DWORD *)v15 - <span class="number">2</span>))));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">while</span> ( v0 &lt; <span class="number">32</span> );</span><br><span class="line">  <span class="keyword">if</span> ( v0 &lt; <span class="number">33</span> )</span><br><span class="line">  &#123;</span><br><span class="line">LABEL_9:</span><br><span class="line">    v28 = (<span class="type">char</span> *)v35 + v0;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">      ++v28;</span><br><span class="line">      v29 = v0 / <span class="number">57</span>;</span><br><span class="line">      v30 = v0++;</span><br><span class="line">      *(v28 - <span class="number">1</span>) ^= v30 - <span class="number">57</span> * v29 + <span class="number">53</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> ( v0 &lt; <span class="number">33</span> );</span><br><span class="line">  &#125;</span><br><span class="line">  v31 = v37;</span><br><span class="line">  <span class="keyword">do</span></span><br><span class="line">  &#123;</span><br><span class="line">    v32 = (<span class="type">unsigned</span> __int8)*(v31 - <span class="number">48</span>);</span><br><span class="line">    v33 = (<span class="type">unsigned</span> __int8)*v31 - v32;</span><br><span class="line">    <span class="keyword">if</span> ( v33 )</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    ++v31;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">while</span> ( v32 );</span><br><span class="line">  <span class="keyword">if</span> ( v33 )</span><br><span class="line">    v34.m128i_i32[<span class="number">0</span>] = <span class="number">-872817740</span>;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    v34.m128i_i32[<span class="number">0</span>] = <span class="number">-1879061547</span>;</span><br><span class="line">  v34.m128i_i16[<span class="number">2</span>] = <span class="number">3338</span>;</span><br><span class="line">  *(__int16 *)((<span class="type">char</span> *)v34.m128i_i16 + <span class="number">1</span>) ^= <span class="number">0x3736</span>u;</span><br><span class="line">  v34.m128i_i8[<span class="number">3</span>] ^= <span class="number">0x38</span>u;</span><br><span class="line">  v34.m128i_i8[<span class="number">6</span>] = <span class="number">0</span>;</span><br><span class="line">  sub_7FF755DA1020(&amp;v34);</span><br><span class="line">  Sleep(<span class="number">0x1388</span>u);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建了一个子进程</li>
+<li>sub_7FF755DA1070(&amp;unk_7FF755DC5600, v37);第一个参数为%s，猜测为scanf函数，v37就是我们传入的flag，存储在[rcx-8]中</li>
+</ul>
+<p>打断点在scanf然后进一步调试，观察栈中数据变化，发现[rbp+57h+var_B0]中存储的是flag的信息，</p>
+<img src="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231215213439983.png" alt="image-20231215213439983" style="zoom:50%;" />
+
+<p><img src="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231215214312875.png" alt="image-20231215214312875"></p>
+<p>字符串为：HiGWDUuXQS6wVHBTp0ERfJe6VqprMqD1</p>
+<img src="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231215214839633.png" alt="image-20231215214839633" style="zoom:50%;" />
+
+<h3 id="2-远程注入模块"><a href="#2-远程注入模块" class="headerlink" title="2.远程注入模块"></a>2.远程注入模块</h3><h4 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h4><ul>
+<li>使用Windows API CreateRemoteThread 远程注入模块到crackme进程中并且不崩溃</li>
+<li>然后使用ark工具(例如processhacker等)能够查看注入模块的信息。</li>
+<li>通过Hook进程中的函数使得输入任何字符串，控制台都会打印”正确”。</li>
+</ul>
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><blockquote>
+<p> Dll注入原理</p>
+</blockquote>
+<p>Dll注入一般指向一个正在运行的程序注入一个线程,注入的线程运行我们的代码,而我们的代码就以DLL(动态链接库)的形式存在。但是程序不会平白无故的就加载我们的dll,这时候就需要使用我们强大的Windows API了,它为我们提供了大量的函数来附加和操纵其他进程。<br> API中的所有函数都包含于DLL文件之中。其中，最重要的是“Kernel32.dll”（包含管理内存，进程和线程相关的函数），“User32.dll”（大部分是用户接口函数），和“GDI32.dll”（绘制图形和显示文本相关的函数）。。</p>
+<p>其中最经典的注入方式：<strong>远程进程注入</strong></p>
+<p>这种方法灵活性高,同时要求掌握的知识也很多，其核心思想就是<strong>在目标进程中开启一个线程调用LoadLibrary函数来加载我们想要注入的dll.</strong></p>
+<img src="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231215181957773.png" alt="image-20231215181957773" style="zoom: 50%;" />
+
+<blockquote>
+<p>具体流程</p>
+</blockquote>
+<ul>
+<li>获得要注入进程的进程ID，可以使用进程名获得。</li>
+<li>使用VirtualAllocEx api来在该进程内开辟一块内存，大小正好是DLL路径。</li>
+<li>将DLL路径信息通过WriteProcessMemory 写入该进程空间。</li>
+<li>获得kernal32在本进程的地址。因为同平台下所有exe都在同一位置加载kernal32。</li>
+<li>在kernal32中获得LoadLibraryW的地址，此地址也是被注入进程的LoadLibraryW地址。</li>
+<li>创建远程线程执行这个LoadLibraryW操作，参数就是要传入的DLL路径。</li>
+</ul>
+<blockquote>
+<p>dll文件结构</p>
+</blockquote>
+<p><strong>DllMain</strong></p>
+<p> 跟exe有个main或者WinMain入口函数一样，DLL也有一个入口函数，就是DllMain。以“DllMain”为关键字。对于动态链接库，DllMain是一个可选的入口函数。</p>
+<p>函数定义：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">BOOL WINAPI DllMain(</span><br><span class="line">  _In_ HINSTANCE hinstDLL, // 指向自身的句柄</span><br><span class="line">  _In_ DWORD fdwReason, // 调用原因</span><br><span class="line">  _In_ LPVOID lpvReserved // 隐式加载和显式加载</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>对于第二个参数fdwReason：它指明了系统调用Dll的原因，可能是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DLL_PROCESS_ATTACH</span><br><span class="line">DLL_PROCESS_DETACH</span><br><span class="line">DLL_THREAD_ATTACH</span><br><span class="line">DLL_THREAD_DETACH</span><br></pre></td></tr></table></figure>
+
+<p>下面详细分析：</p>
+<ul>
+<li>进程映射</li>
+</ul>
+<p>DLL_PROCESS_ATTACH</p>
+<p>一个程序要调用Dll里的函数，首先要先把DLL文件映射到进程的地址空间。要把一个DLL文件映射到进程的地址空间，有两种方法：LoadLibrary或者LoadLibraryEx。</p>
+<p>当一个DLL文件被映射到进程的地址空间时，系统调用该DLL的DllMain函数，传递的fdwReason参数为DLL_PROCESS_ATTACH，这种调用只会发生在第一次映射时。如果同一个进程后来为已经映射进来的DLL再次调用LoadLibrary或者LoadLibraryEx，操作系统只会增加DLL的使用次数，它不会再用DLL_PROCESS_ATTACH调用DLL的DllMain函数。不同进程用LoadLibrary同一个DLL时，每个进程的第一次映射都会用DLL_PROCESS_ATTACH调用DLL的DllMain函数。</p>
+<ul>
+<li>进程卸载</li>
+</ul>
+<p>DLL_PROCESS_DETACH</p>
+<p>当DLL被从进程的地址空间解除映射时，系统调用了它的DllMain，传递的fdwReason值是DLL_PROCESS_DETACH。当DLL处理该值时，它应该执行进程相关的清理工作。</p>
+<p>那么什么时候DLL被从进程的地址空间解除映射呢？两种情况：</p>
+<p>​		1.FreeLibrary解除DLL映射（有几个LoadLibrary，就要有几个FreeLibrary）</p>
+<p>​		2.进程结束而解除DLL映射，在进程结束前还没有解除DLL的映射，进程结束后会解除DLL映射。（如果进程的终结是因为调用了TerminateProcess，系统就不会用DLL_PROCESS_DETACH来调用DLL的DllMain函数。这就意味着DLL在进程结束前没有机会执行任何清理工作。）</p>
+<p>注意：当用DLL_PROCESS_ATTACH调用DLL的DllMain函数时，如果返回FALSE，说明没有初始化成功，系统仍会用DLL_PROCESS_DETACH调用DLL的DllMain函数。因此，必须确保清理那些没有成功初始化的东西。</p>
+<ul>
+<li>线程映射</li>
+</ul>
+<p>DLL_THREAD_ATTACH</p>
+<p>当进程创建一线程时，系统查看当前映射到进程地址空间中的所有DLL文件映像，并用值DLL_THREAD_ATTACH调用DLL的DllMain函数。</p>
+<p>新创建的线程负责执行这次的DLL的DllMain函数，只有当所有的DLL都处理完这一通知后，系统才允许进程开始执行它的线程函数。</p>
+<p>注意跟DLL_PROCESS_ATTACH的区别，第n(n&gt;&#x3D;2)次以后地把DLL映像文件映射到进程的地址空间时，是不再用DLL_PROCESS_ATTACH调用DllMain的。而DLL_THREAD_ATTACH不同，进程中的每次建立线程，都会用值DLL_THREAD_ATTACH调用DllMain函数，哪怕是线程中建立线程也一样。</p>
+<ul>
+<li>线程卸载</li>
+</ul>
+<p>DLL_THREAD_DETACH</p>
+<p>如果线程调用了ExitThread来结束线程（线程函数返回时，系统也会自动调用ExitThread），系统查看当前映射到进程空间中的所有DLL文件映像，并用DLL_THREAD_DETACH来调用DllMain函数，通知所有的DLL去执行线程级的清理工作。</p>
+<p>注意：如果线程的结束是因为系统中的一个线程调用了<code>TerminateThread</code>，系统就不会用值DLL_THREAD_DETACH来调用所有DLL的DllMain函数。</p>
+<h4 id="关于本题-1"><a href="#关于本题-1" class="headerlink" title="关于本题"></a>关于本题</h4><h5 id="注入文件：evil-cpp-生成evil-exe"><a href="#注入文件：evil-cpp-生成evil-exe" class="headerlink" title="注入文件：evil.cpp(生成evil.exe)"></a>注入文件：evil.cpp(生成evil.exe)</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;Windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;TlHelp32.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;tchar.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function">BOOL <span class="title">CreateRemoteDllInjectDll</span><span class="params">(DWORD ProcessID)</span></span>;</span><br><span class="line"><span class="function">DWORD <span class="title">FindProcessID</span><span class="params">(LPCTSTR szProcessName)</span></span>;</span><br><span class="line"><span class="comment">//DWORD FindProcessID(const wchar_t* szProcessName);</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="comment">//Get the pid by name</span></span><br><span class="line">	DWORD pid = <span class="built_in">FindProcessID</span>(<span class="string">&quot;crackme.exe&quot;</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;pid:%d\n&quot;</span>, pid);</span><br><span class="line">	<span class="comment">//DLL inject</span></span><br><span class="line">	<span class="keyword">if</span> (!<span class="built_in">CreateRemoteDllInjectDll</span>(pid)) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;faild to create remotedllinject evil.dll&quot;</span>);</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;die&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//Create remotedllinject evil.dll</span></span><br><span class="line"><span class="function">BOOL <span class="title">CreateRemoteDllInjectDll</span><span class="params">(DWORD ProcessID)</span> </span>&#123;</span><br><span class="line">	<span class="type">char</span> DllName[_MAX_PATH] =<span class="string">&quot;E:\\school\\TencentClass\\T1\\TencentClass_T1.dll&quot;</span>;</span><br><span class="line">	HANDLE hProcess = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//注入进程</span></span><br><span class="line">	hProcess = <span class="built_in">OpenProcess</span>(PROCESS_ALL_ACCESS, FALSE, ProcessID);<span class="comment">//打开进程获取句柄</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="literal">NULL</span> == hProcess) &#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;OpenProcess error&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">size_t</span> dwsize = <span class="built_in">sizeof</span>(DllName);</span><br><span class="line">	<span class="type">void</span>* pDLLAddr = <span class="built_in">VirtualAllocEx</span>(hProcess, <span class="literal">NULL</span>, dwsize, MEM_COMMIT,PAGE_EXECUTE_READWRITE);</span><br><span class="line">	<span class="comment">//分配虚拟内存，并且地址保存在pDLLAddr目录中</span></span><br><span class="line">	<span class="keyword">if</span> (pDLLAddr == <span class="literal">NULL</span>) &#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;VirtualAllocEx is error&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (!<span class="built_in">WriteProcessMemory</span>(hProcess, pDLLAddr, (<span class="type">void</span>*)DllName, dwsize, <span class="literal">NULL</span>))</span><br><span class="line">	&#123;<span class="comment">//把所需要的注入的dll文件目录字符注入给目标进程</span></span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;WriteProcessMemory is error&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//获取地址</span></span><br><span class="line">	HMODULE hModule = <span class="built_in">GetModuleHandle</span>(<span class="string">&quot;Kernel32&quot;</span>);<span class="comment">//获取kernel32.dll模块</span></span><br><span class="line">	<span class="keyword">if</span> (hModule == <span class="literal">NULL</span>) &#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;kernel32 error&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	LPTHREAD_START_ROUTINE LoadLibraryAddr = (LPTHREAD_START_ROUTINE)<span class="built_in">GetProcAddress</span>(hModule, <span class="string">&quot;LoadLibraryA&quot;</span>);<span class="comment">//进一步获取LoadLibraryA的函数地址</span></span><br><span class="line">		<span class="keyword">if</span> (LoadLibraryAddr == <span class="literal">NULL</span>) &#123;</span><br><span class="line">			<span class="built_in">puts</span>(<span class="string">&quot;LoadLibraryAddr error&quot;</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="comment">//执行远程线程注入</span></span><br><span class="line">	<span class="comment">//HANDLE hRemotehandle = CreateRemoteThread(hProcess, NULL, 0,LoadLibraryAddr, pDLLAddr, 0, NULL); //创造远程线程注入到目标进程中</span></span><br><span class="line">	<span class="comment">//if (!hRemotehandle) &#123;</span></span><br><span class="line">	<span class="comment">//	printf(&quot;%p\t%p\t%p\t&quot;, hProcess, LoadLibraryAddr, pDLLAddr);</span></span><br><span class="line">	<span class="comment">//	DWORD dwError = GetLastError();</span></span><br><span class="line">	<span class="comment">//	printf(&quot;CreateRemoteThread is error. Error Code: %d\n&quot;, dwError);</span></span><br><span class="line">	<span class="comment">//	return false;</span></span><br><span class="line">	<span class="comment">//&#125;</span></span><br><span class="line">	HANDLE hRemotehandle = <span class="built_in">CreateRemoteThread</span>(hProcess, <span class="literal">NULL</span>, <span class="number">0</span>, LoadLibraryAddr, pDLLAddr, <span class="number">0</span>, <span class="literal">NULL</span>); <span class="comment">//创造远程线程注入到目标进程中</span></span><br><span class="line">	<span class="keyword">if</span> (!hRemotehandle) &#123;</span><br><span class="line">		DWORD dwError = <span class="built_in">GetLastError</span>();</span><br><span class="line"></span><br><span class="line">		LPVOID lpMsgBuf;</span><br><span class="line">		<span class="built_in">FormatMessageA</span>(</span><br><span class="line">			FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,</span><br><span class="line">			<span class="literal">NULL</span>,</span><br><span class="line">			dwError,</span><br><span class="line">			<span class="number">0</span>, <span class="comment">// Default language</span></span><br><span class="line">			(LPSTR)&amp;lpMsgBuf,</span><br><span class="line">			<span class="number">0</span>,</span><br><span class="line">			<span class="literal">NULL</span></span><br><span class="line">		);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//printf(&quot;CreateRemoteThread is error. Error Code: %d - %s\n&quot;, dwError, lpMsgBuf);</span></span><br><span class="line"></span><br><span class="line">		<span class="built_in">LocalFree</span>(lpMsgBuf);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//printf(&quot;%p\t%p\t%p\t&quot;, hProcess, LoadLibraryAddr, pDLLAddr);</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="built_in">WaitForSingleObject</span>(hRemotehandle, INFINITE);<span class="comment">//等待返回</span></span><br><span class="line">	<span class="built_in">CloseHandle</span>(hRemotehandle);<span class="comment">//关闭目标进程句柄</span></span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;inject successfully!&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Find PID by name</span></span><br><span class="line"><span class="function">DWORD <span class="title">FindProcessID</span><span class="params">(LPCTSTR szProcessName)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	DWORD dwPID = <span class="number">0xFFFFFFFF</span>;</span><br><span class="line">	HANDLE hSnapShot = INVALID_HANDLE_VALUE;</span><br><span class="line">	PROCESSENTRY32 pe;</span><br><span class="line">	pe.dwSize = <span class="built_in">sizeof</span>(PROCESSENTRY32);</span><br><span class="line">	<span class="comment">//hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPALL, NULL);</span></span><br><span class="line">	hSnapShot = <span class="built_in">CreateToolhelp32Snapshot</span>(TH32CS_SNAPALL, <span class="number">0</span>);</span><br><span class="line">	<span class="built_in">Process32First</span>(hSnapShot, &amp;pe);</span><br><span class="line">	<span class="keyword">do</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (!_tcsicmp(szProcessName, (LPCTSTR)pe.szExeFile))</span><br><span class="line">		&#123;</span><br><span class="line">			dwPID = pe.th32ProcessID;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">while</span> (<span class="built_in">Process32Next</span>(hSnapShot, &amp;pe));</span><br><span class="line">	<span class="built_in">CloseHandle</span>(hSnapShot);</span><br><span class="line">	<span class="keyword">return</span> dwPID;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="dll文件：dllmain-cpp-生成dllmain-exe"><a href="#dll文件：dllmain-cpp-生成dllmain-exe" class="headerlink" title="dll文件：dllmain.cpp(生成dllmain.exe)"></a>dll文件：dllmain.cpp(生成dllmain.exe)</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Windows.h&gt;</span></span></span><br><span class="line"><span class="function">BOOL APIENTRY <span class="title">DllMain</span><span class="params">(HMODULE hModule,DWORD ul_reason_for_call,LPVOID lpReserved)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">switch</span> (ul_reason_for_call)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">case</span> DLL_PROCESS_ATTACH:</span><br><span class="line">        <span class="built_in">OutputDebugString</span>(<span class="string">&quot;DLL Inject Sucess&quot;</span>);</span><br><span class="line">        <span class="built_in">MessageBox</span>(<span class="literal">NULL</span>, <span class="string">&quot;dll sucess&quot;</span>, <span class="string">&quot;dll sucess&quot;</span>, MB_OK);</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">//加载DLL时运行d</span></span><br><span class="line">    <span class="keyword">case</span> DLL_THREAD_ATTACH: </span><br><span class="line">    <span class="keyword">case</span> DLL_THREAD_DETACH:</span><br><span class="line">    <span class="keyword">case</span> DLL_PROCESS_DETACH:</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="作业结果"><a href="#作业结果" class="headerlink" title="作业结果"></a>作业结果</h4><ul>
+<li>将ddlmain.cpp编译成64位的dll文件(注意一定要是64位)</li>
+<li>将dll文件绝对路径填入evil.cpp中</li>
+<li>将evil.cpp编译成64位的exe文件</li>
+<li>在crackme执行的过程中，以管理员权限执行evil.exe</li>
+<li>利用process Hacker查看改进程调用Modules</li>
+<li>可以看到dll成功注入</li>
+</ul>
+<blockquote>
+<p>注入成功并弹窗</p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231217014350255.png" alt="image-20231217014350255" style="zoom:33%;" />
+
+<blockquote>
+<p>Process Hackers截图，evil1.dll为恶意dll</p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231217014435627.png" alt="image-20231217014435627" style="zoom: 33%;" />
+
+<h3 id="3-Hook程序"><a href="#3-Hook程序" class="headerlink" title="3.Hook程序"></a>3.Hook程序</h3><h4 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h4><blockquote>
+<p> dll注入之Hook</p>
+</blockquote>
+<h5 id="DLL注入"><a href="#DLL注入" class="headerlink" title="DLL注入"></a>DLL注入</h5><pre><code>在Windows中，每个进程有自己私有的地址空间。当我们用指针来引用内存的时候，指针的值表示的是进程自己的地址空间中的一个内存地址。进程不能创建一个指针来引用属于其他进程的内存。因此，如果进程有一个缺陷会覆盖随机地址处的内存，那么这个缺陷不会影响到其他进程所使用的内存。
+独立的地址空间对开发人员和用户是非常有利的。对开发人员来说，系统更有可能捕获错误的内存读/写。对于用户来说，操作系统变得更加健壮了，因为一个应用程序的错误不会导致其他应用程序或操作系统崩溃。
+所谓DLL注入就是将一个DLL放进某个进程的地址空间里，让它成为那个进程的一部分。可以通过很多种方式来实现DLL注入。
+    + 使用注册表来注入DLL
+    + 使用Windows Hook来注入DLL 
+    + 使用远程线程来注入DLL   --本题的考点
+    + 使用木马DLL来注入
+    + 把DLL作为调试器来注入
+    + 使用CreateProcess来注入代码
+</code></pre>
+<p>我们已经通过远程注入把恶意的dll注入进去了，下一步是编写dll，修改源程序逻辑，使得我们无论输入什么都返回正确。</p>
+<h5 id="Hook技术"><a href="#Hook技术" class="headerlink" title="Hook技术"></a>Hook技术</h5><p><strong>hook技术就是让目标函数在执行之前先执行一段我们自己写的代码</strong></p>
+<h4 id="本题"><a href="#本题" class="headerlink" title="本题"></a>本题</h4><p>IDA分析代码后发现最终判断flag的部分为</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> ( v33 );</span><br><span class="line"><span class="keyword">if</span> ( (_DWORD)v34 )</span><br><span class="line">  v35.m128i_i32[<span class="number">0</span>] = <span class="number">-872817740</span>;              <span class="comment">// 错误</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  v35.m128i_i32[<span class="number">0</span>] = <span class="number">-1879061547</span>;             <span class="comment">//正确</span></span><br><span class="line">v35.m128i_i16[<span class="number">2</span>] = <span class="number">3338</span>;</span><br><span class="line">*(__int16 *)((<span class="type">char</span> *)v35.m128i_i16 + <span class="number">1</span>) ^= <span class="number">0x3736</span>u;</span><br><span class="line">v35.m128i_i8[<span class="number">3</span>] ^= <span class="number">0x38</span>u;</span><br><span class="line">v35.m128i_i8[<span class="number">6</span>] = <span class="number">0</span>;</span><br><span class="line"><span class="built_in">sub_7FF6422E1020</span>((__int64)&amp;v35, v34, <span class="number">-48</span>i64);     <span class="comment">//打印函数</span></span><br></pre></td></tr></table></figure>
+
+<p>ce中找到相关的汇编代码</p>
+<img src="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231219045931532.png" alt="image-20231219045931532" style="zoom: 33%;" />
+
+<p>于是我们有两个思路</p>
+<ul>
+<li>修改if判断逻辑，让判断一直为正确</li>
+<li>修改最终的输出函数，一直输出正确</li>
+</ul>
+<p>第二个方法可以使用minHook实现，将原来的函数Hook为newPrintf函数就行</p>
+<p>现主要实现第一种方法</p>
+<p>把if判断的逻辑删掉和跳转错误的jne改成nop</p>
+<img src="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231219051036666.png" alt="image-20231219051036666" style="zoom:50%;" />
+
+<p>最终效果</p>
+<img src="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231219050607270.png" alt="image-20231219050607270" style="zoom: 50%;" />
+
+<p>使用代码实现</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// dllmain.cpp : 定义 DLL 应用程序的入口点。</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;pch.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetHook</span><span class="params">(<span class="type">void</span>* pJNE)</span> </span>&#123;</span><br><span class="line">    DWORD oldProtect;</span><br><span class="line">    <span class="built_in">VirtualProtect</span>(pJNE, <span class="number">4</span>, PAGE_EXECUTE_READWRITE, &amp;oldProtect); </span><br><span class="line">    *(DWORD*)pJNE = <span class="number">0x90909090</span>; <span class="comment">// 换入nop nop nop nop</span></span><br><span class="line">    <span class="built_in">VirtualProtect</span>(pJNE, <span class="number">4</span>, oldProtect, &amp;oldProtect);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">BOOL APIENTRY <span class="title">DllMain</span><span class="params">(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (ul_reason_for_call)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> DLL_PROCESS_ATTACH:</span><br><span class="line">        &#123;</span><br><span class="line">            HMODULE hCrackMe = <span class="built_in">GetModuleHandle</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;crackme.exe&quot;</span>)); <span class="comment">//获得基地址</span></span><br><span class="line">            <span class="keyword">if</span> (hCrackMe != <span class="literal">NULL</span>) &#123;</span><br><span class="line">                HMODULE jneAddress = (HMODULE)((<span class="type">size_t</span>)hCrackMe + <span class="number">0x18E7</span>);</span><br><span class="line">                <span class="built_in">SetHook</span>((<span class="type">void</span>*)jneAddress);</span><br><span class="line">                <span class="built_in">OutputDebugString</span>(<span class="string">&quot;Hook Sucess&quot;</span>);</span><br><span class="line">                <span class="built_in">MessageBox</span>(<span class="literal">NULL</span>, <span class="string">&quot;Hook sucess&quot;</span>, <span class="string">&quot;Hook sucess&quot;</span>, MB_OK);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">case</span> DLL_THREAD_ATTACH:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> DLL_THREAD_DETACH:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> DLL_PROCESS_DETACH:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>编译：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PS E:\school\TencentClass\T1&gt; E:\app\MinGW-w64\bin\x86_64-w64-mingw32-g++ -shared -o Hook.dll  hook.cpp</span><br><span class="line">PS E:\school\TencentClass\T1&gt; E:\app\MinGW-w64\bin\x86_64-w64-mingw32-g++  -o evil.exe evil.cpp</span><br></pre></td></tr></table></figure>
+
+<h5 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h5><img src="https://cdn.jsdelivr.net/gh/p5ych2022/IHS@master/img/image-20231219053305127.png" alt="image-20231219053305127" style="zoom:50%;" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Article</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%9C%E4%B8%9A"><span class="toc-number">1.</span> <span class="toc-text">第一次作业</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%88%86%E6%9E%90%E5%B9%B6%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F%EF%BC%8C%E6%89%BE%E5%88%B0flag"><span class="toc-number">1.1.</span> <span class="toc-text">1.分析并调试程序，找到flag</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">1.1.1.</span> <span class="toc-text">前置知识点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%9C%AC%E9%A2%98"><span class="toc-number">1.1.2.</span> <span class="toc-text">关于本题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%BF%9C%E7%A8%8B%E6%B3%A8%E5%85%A5%E6%A8%A1%E5%9D%97"><span class="toc-number">1.2.</span> <span class="toc-text">2.远程注入模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A6%81%E6%B1%82"><span class="toc-number">1.2.1.</span> <span class="toc-text">要求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.2.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%9C%AC%E9%A2%98-1"><span class="toc-number">1.2.3.</span> <span class="toc-text">关于本题</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B3%A8%E5%85%A5%E6%96%87%E4%BB%B6%EF%BC%9Aevil-cpp-%E7%94%9F%E6%88%90evil-exe"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">注入文件：evil.cpp(生成evil.exe)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#dll%E6%96%87%E4%BB%B6%EF%BC%9Adllmain-cpp-%E7%94%9F%E6%88%90dllmain-exe"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">dll文件：dllmain.cpp(生成dllmain.exe)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E4%B8%9A%E7%BB%93%E6%9E%9C"><span class="toc-number">1.2.4.</span> <span class="toc-text">作业结果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Hook%E7%A8%8B%E5%BA%8F"><span class="toc-number">1.3.</span> <span class="toc-text">3.Hook程序</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-1"><span class="toc-number">1.3.1.</span> <span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#DLL%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">DLL注入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Hook%E6%8A%80%E6%9C%AF"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">Hook技术</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%AC%E9%A2%98"><span class="toc-number">1.3.2.</span> <span class="toc-text">本题</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E6%95%88%E6%9E%9C"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">最终效果</span></a></li></ol></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&text=菁英班游戏安全第一次作业"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&title=菁英班游戏安全第一次作业"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&is_video=false&description=菁英班游戏安全第一次作业"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=菁英班游戏安全第一次作业&body=Check out this article: https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&title=菁英班游戏安全第一次作业"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&title=菁英班游戏安全第一次作业"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&title=菁英班游戏安全第一次作业"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&title=菁英班游戏安全第一次作业"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&name=菁英班游戏安全第一次作业&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://p5ych2022.github.io/2023/12/21/tx%E8%8F%81%E8%8B%B1%E7%8F%AD%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/&t=菁英班游戏安全第一次作业"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2022-2026
+    psych
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Article</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+    </ul>
+    <ul>
+      
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_site_pv">
+            本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        </span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv" style='display:none'>
+                本站访客数<span id="busuanzi_value_site_uv"></span>人
+        </span>
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      
+    </ul>
+  </nav>
+</div>
+
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'p5ych2022/psych.green';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
