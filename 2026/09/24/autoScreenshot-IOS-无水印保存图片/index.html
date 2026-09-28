@@ -6,17 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="摘要测试可用范围 小红书作品图片、评论 抖音作品图片、评论 Instagram 作品图片  效果轻点手机背面三下 →  截屏 → 自动裁掉外围界面 → 将处理后的新图片存进相册。  ⭐ 与网上的无水印保存工具不同，该工具借助 Pythonista 3 在 IOS 本地运行 python 脚本，不需要借助远端服务器处理。   仓库地址https:&#x2F;&#x2F;github.com&#x2F;p5ych2022&#x2F;auto">
+    <meta name="description" content="摘要测试可用范围 小红书作品图片、评论 抖音作品图片、评论 Instagram 作品图片  效果轻点手机背面三下 →  截屏 → 自动裁掉外围界面 → 将处理后的新图片存进相册。  ⭐ 与网上的无水印保存工具不同，该工具借助 Pythonista 3 在 IOS 本地运行 python 脚本，不需要借助远端服务器处理。 update: 更新 IOS 27 之后 shortcut 和 pythoni">
 <meta property="og:type" content="article">
 <meta property="og:title" content="autoScreenshot-IOS-无水印保存图片">
 <meta property="og:url" content="https://p5ych2022.github.io/2026/09/24/autoScreenshot-IOS-%E6%97%A0%E6%B0%B4%E5%8D%B0%E4%BF%9D%E5%AD%98%E5%9B%BE%E7%89%87/index.html">
 <meta property="og:site_name" content="psych&#39;s blog">
-<meta property="og:description" content="摘要测试可用范围 小红书作品图片、评论 抖音作品图片、评论 Instagram 作品图片  效果轻点手机背面三下 →  截屏 → 自动裁掉外围界面 → 将处理后的新图片存进相册。  ⭐ 与网上的无水印保存工具不同，该工具借助 Pythonista 3 在 IOS 本地运行 python 脚本，不需要借助远端服务器处理。   仓库地址https:&#x2F;&#x2F;github.com&#x2F;p5ych2022&#x2F;auto">
+<meta property="og:description" content="摘要测试可用范围 小红书作品图片、评论 抖音作品图片、评论 Instagram 作品图片  效果轻点手机背面三下 →  截屏 → 自动裁掉外围界面 → 将处理后的新图片存进相册。  ⭐ 与网上的无水印保存工具不同，该工具借助 Pythonista 3 在 IOS 本地运行 python 脚本，不需要借助远端服务器处理。 update: 更新 IOS 27 之后 shortcut 和 pythoni">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://p5ych2022.github.io/images/posts/autoScreenshot-IOS-%E6%97%A0%E6%B0%B4%E5%8D%B0%E4%BF%9D%E5%AD%98%E5%9B%BE%E7%89%87/sample-1-detected.jpg">
 <meta property="og:image" content="https://p5ych2022.github.io/images/posts/autoScreenshot-IOS-%E6%97%A0%E6%B0%B4%E5%8D%B0%E4%BF%9D%E5%AD%98%E5%9B%BE%E7%89%87/sample-1-cropped.jpg">
 <meta property="article:published_time" content="2026-09-24T07:40:15.000Z">
-<meta property="article:modified_time" content="2026-09-24T08:41:27.424Z">
+<meta property="article:modified_time" content="2026-09-28T08:23:52.326Z">
 <meta property="article:author" content="psych">
 <meta property="article:tag" content="开发">
 <meta property="article:tag" content="iOS">
@@ -134,7 +134,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%98%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text">摘要</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E5%8F%AF%E7%94%A8%E8%8C%83%E5%9B%B4"><span class="toc-number">1.1.</span> <span class="toc-text">测试可用范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%88%E6%9E%9C"><span class="toc-number">1.2.</span> <span class="toc-text">效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%93%E5%BA%93%E5%9C%B0%E5%9D%80"><span class="toc-number">1.3.</span> <span class="toc-text">仓库地址</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">2.</span> <span class="toc-text">工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">图片处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%96%E5%9B%B4%E8%83%8C%E6%99%AF%E4%BC%B0%E8%AE%A1"><span class="toc-number">4.1.</span> <span class="toc-text">外围背景估计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E7%BB%B4%E5%86%85%E5%AE%B9%E8%BD%AE%E5%BB%93"><span class="toc-number">4.2.</span> <span class="toc-text">一维内容轮廓</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A3%81%E5%89%AA%E7%AD%96%E7%95%A5"><span class="toc-number">4.3.</span> <span class="toc-text">裁剪策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%88%E6%9E%9C-1"><span class="toc-number">5.</span> <span class="toc-text">效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%BD%E5%8A%9B%E8%BE%B9%E7%95%8C"><span class="toc-number">6.</span> <span class="toc-text">能力边界</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%98%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text">摘要</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E5%8F%AF%E7%94%A8%E8%8C%83%E5%9B%B4"><span class="toc-number">1.1.</span> <span class="toc-text">测试可用范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%88%E6%9E%9C"><span class="toc-number">1.2.</span> <span class="toc-text">效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%93%E5%BA%93%E5%9C%B0%E5%9D%80"><span class="toc-number">1.3.</span> <span class="toc-text">仓库地址</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">2.</span> <span class="toc-text">工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Mode-1-%E7%9B%B4%E6%8E%A5-shortcut-%E4%BC%A0%E5%9B%BE%E7%89%87%E5%88%B0-pythonista"><span class="toc-number">3.1.</span> <span class="toc-text">Mode 1:直接 shortcut 传图片到 pythonista</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mode-2-%E9%80%9A%E8%BF%87-iCloud-%E5%81%9A-bridge"><span class="toc-number">3.2.</span> <span class="toc-text">Mode 2:通过 iCloud 做 bridge</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">图片处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%96%E5%9B%B4%E8%83%8C%E6%99%AF%E4%BC%B0%E8%AE%A1"><span class="toc-number">4.1.</span> <span class="toc-text">外围背景估计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E7%BB%B4%E5%86%85%E5%AE%B9%E8%BD%AE%E5%BB%93"><span class="toc-number">4.2.</span> <span class="toc-text">一维内容轮廓</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A3%81%E5%89%AA%E7%AD%96%E7%95%A5"><span class="toc-number">4.3.</span> <span class="toc-text">裁剪策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%88%E6%9E%9C-1"><span class="toc-number">5.</span> <span class="toc-text">效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%BD%E5%8A%9B%E8%BE%B9%E7%95%8C"><span class="toc-number">6.</span> <span class="toc-text">能力边界</span></a></li></ol>
       </div>
     
   </span>
@@ -192,7 +192,7 @@
 <h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a><strong>效果</strong></h3><p>轻点手机背面三下 →  截屏 → 自动裁掉外围界面 → 将处理后的新图片存进相册。</p>
 <aside>
 ⭐
-与网上的无水印保存工具不同，该工具借助 Pythonista 3 在 IOS 本地运行 python 脚本，不需要借助远端服务器处理。
+与网上的无水印保存工具不同，该工具借助 Pythonista 3 在 IOS 本地运行 python 脚本，不需要借助远端服务器处理。 update: 更新 IOS 27 之后 shortcut 和 pythonista 之间的文件传输估计做了限制，传不了了，增加备用方案：通过 iCLoud 文件存储做 bridge 进行文件传输，效果没有原生丝滑但是也能用。。
 </aside>
 
 <h3 id="仓库地址"><a href="#仓库地址" class="headerlink" title="仓库地址"></a><strong>仓库地址</strong></h3><p><a target="_blank" rel="noopener" href="https://github.com/p5ych2022/autoScreenshot_IOS">https://github.com/p5ych2022/autoScreenshot_IOS</a></p>
@@ -216,7 +216,7 @@
 <td>图像解码、缩图、裁剪</td>
 </tr>
 </tbody></table>
-<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><pre><code class="highlight mermaid">flowchart TD
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><h3 id="Mode-1-直接-shortcut-传图片到-pythonista"><a href="#Mode-1-直接-shortcut-传图片到-pythonista" class="headerlink" title="Mode 1:直接 shortcut 传图片到 pythonista"></a>Mode 1:直接 shortcut 传图片到 pythonista</h3><pre><code class="highlight mermaid">flowchart TD
     A[轻点 iPhone 背面两下] --&gt; B&#123;是否截图并自动裁剪？&#125;
     B --&gt;|否| C[停止快捷指令]
     B --&gt;|是| D[等待 1 秒，让菜单消失]
@@ -227,7 +227,16 @@
     H --&gt;|是| I[存储到相簿：只保存脚本输出]
     I --&gt; J[显示通知：裁剪图片已保存]
     H --&gt;|否| K[提示未取得裁剪图片并停止]</code></pre>
-
+<h3 id="Mode-2-通过-iCloud-做-bridge"><a href="#Mode-2-通过-iCloud-做-bridge" class="headerlink" title="Mode 2:通过 iCloud 做 bridge"></a>Mode 2:通过 iCloud 做 bridge</h3><pre><code class="highlight mermaid">flowchart TD
+    A[截屏] --&gt; B[转换图像为 PNG]
+    B --&gt; C[设定名称 shortcut-input.png]
+    C --&gt; D[iOS 存储文件：写入 Pythonista iCloud]
+    D --&gt; E[Run Pythonista Script：主 App 模式]
+    E --&gt; F[自动返回快捷指令]
+    F --&gt; G[iOS 获取文件：shortcut-output.png]
+    G --&gt; H[从输入中获取图像]
+    H --&gt; I[存储到相簿]
+    I --</code></pre>
 <h2 id="图片处理"><a href="#图片处理" class="headerlink" title="图片处理"></a>图片处理</h2><h3 id="外围背景估计"><a href="#外围背景估计" class="headerlink" title="外围背景估计"></a>外围背景估计</h3><p>脚本分别分析垂直轴和水平轴。以垂直方向为例：</p>
 <ol>
 <li>分别取顶部和底部约 <code>12%</code> 的区域；</li>
@@ -342,7 +351,7 @@
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%98%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text">摘要</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E5%8F%AF%E7%94%A8%E8%8C%83%E5%9B%B4"><span class="toc-number">1.1.</span> <span class="toc-text">测试可用范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%88%E6%9E%9C"><span class="toc-number">1.2.</span> <span class="toc-text">效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%93%E5%BA%93%E5%9C%B0%E5%9D%80"><span class="toc-number">1.3.</span> <span class="toc-text">仓库地址</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">2.</span> <span class="toc-text">工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">图片处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%96%E5%9B%B4%E8%83%8C%E6%99%AF%E4%BC%B0%E8%AE%A1"><span class="toc-number">4.1.</span> <span class="toc-text">外围背景估计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E7%BB%B4%E5%86%85%E5%AE%B9%E8%BD%AE%E5%BB%93"><span class="toc-number">4.2.</span> <span class="toc-text">一维内容轮廓</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A3%81%E5%89%AA%E7%AD%96%E7%95%A5"><span class="toc-number">4.3.</span> <span class="toc-text">裁剪策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%88%E6%9E%9C-1"><span class="toc-number">5.</span> <span class="toc-text">效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%BD%E5%8A%9B%E8%BE%B9%E7%95%8C"><span class="toc-number">6.</span> <span class="toc-text">能力边界</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%98%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text">摘要</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E5%8F%AF%E7%94%A8%E8%8C%83%E5%9B%B4"><span class="toc-number">1.1.</span> <span class="toc-text">测试可用范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%88%E6%9E%9C"><span class="toc-number">1.2.</span> <span class="toc-text">效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%93%E5%BA%93%E5%9C%B0%E5%9D%80"><span class="toc-number">1.3.</span> <span class="toc-text">仓库地址</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">2.</span> <span class="toc-text">工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Mode-1-%E7%9B%B4%E6%8E%A5-shortcut-%E4%BC%A0%E5%9B%BE%E7%89%87%E5%88%B0-pythonista"><span class="toc-number">3.1.</span> <span class="toc-text">Mode 1:直接 shortcut 传图片到 pythonista</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mode-2-%E9%80%9A%E8%BF%87-iCloud-%E5%81%9A-bridge"><span class="toc-number">3.2.</span> <span class="toc-text">Mode 2:通过 iCloud 做 bridge</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">图片处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%96%E5%9B%B4%E8%83%8C%E6%99%AF%E4%BC%B0%E8%AE%A1"><span class="toc-number">4.1.</span> <span class="toc-text">外围背景估计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E7%BB%B4%E5%86%85%E5%AE%B9%E8%BD%AE%E5%BB%93"><span class="toc-number">4.2.</span> <span class="toc-text">一维内容轮廓</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A3%81%E5%89%AA%E7%AD%96%E7%95%A5"><span class="toc-number">4.3.</span> <span class="toc-text">裁剪策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%88%E6%9E%9C-1"><span class="toc-number">5.</span> <span class="toc-text">效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%BD%E5%8A%9B%E8%BE%B9%E7%95%8C"><span class="toc-number">6.</span> <span class="toc-text">能力边界</span></a></li></ol>
       </div>
     
 
