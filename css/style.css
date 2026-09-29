@@ -1549,6 +1549,27 @@ article .content .caption {
 #categories .category-list .category-list-item .category-list-count:after {
   content: ")";
 }
+.content ul:has(> li > input[type="checkbox"]) {
+  padding-left: 0;
+  list-style: none;
+}
+.content ul:has(> li > input[type="checkbox"]) li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  margin: 0.45rem 0;
+}
+.content ul:has(> li > input[type="checkbox"]) input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: #7fff00;
+}
+.content ul:has(> li > input[type="checkbox"]) li:has(input[type="checkbox"]:checked) {
+  color: #ffebcd;
+  text-decoration: line-through;
+}
 .highlight {
   background: #232323;
   color: #ddd;
