@@ -514,6 +514,20 @@
 
     mermaid.initialize({ startOnLoad: false, theme: 'dark' });
     await mermaid.run({ querySelector: '.mermaid' });
+
+    // Scale each rendered SVG by shrinking its own render width, so the
+    // vector text stays crisp (no Chrome zoom text-clipping) and the layout
+    // height shrinks proportionally (no empty space left behind).
+    document.querySelectorAll('.mermaid').forEach(function(el) {
+      var svg = el.querySelector('svg');
+      if (!svg) return;
+      var scale = parseFloat(getComputedStyle(el).getPropertyValue('--mermaid-scale')) || 1;
+      var w = svg.getBoundingClientRect().width;
+      if (w && scale < 1) {
+        svg.style.maxWidth = (w * scale) + 'px';
+        svg.style.width = '100%';
+      }
+    });
   </script>
 
 </body>

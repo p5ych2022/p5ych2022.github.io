@@ -1723,3 +1723,7 @@ code {
 #header-post #actions {
   direction: ltr !important;
 }
+.mermaid {
+  --mermaid-scale: 0.75;
+  text-align: center;
+}
